@@ -20,7 +20,6 @@ public class ClassInfo implements Serializable {
 	
 	// The first part of the array checks for the day.
 	// The second holds the starting and ending time of class for that specific day. 
-	// Let's hope these losers aren't meeting more than once a day.
 	String [][] classtime = new String[5][2];
 	
 	public ClassInfo(String fullName, String instructor, String instructorID, int credits, int maxCapacity, int year, int semester){

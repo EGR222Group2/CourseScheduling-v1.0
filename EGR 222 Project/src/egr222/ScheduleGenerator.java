@@ -78,7 +78,7 @@ public class ScheduleGenerator {
 				for (int course = 0; course < ClassInfo.size(); course++) {
 					// Enters into a loop and will exit once a course has been found.
 					courseLoop:
-					if(ClassInfo.get(course).year == year + 2015 && ClassInfo.get(course).semester == semester) {
+					if(ClassInfo.get(course).year == year + 2015 && ClassInfo.get(course).semester == semester && ClassInfo.get(course).classtime[0][0] == null) {
 						for (int roomNum= 0; roomNum < RoomInfo.size(); roomNum++) {
 							/*	Tries to find find the smallest possible room for the course so rooms with a large capacity
 								will never be unavailable for large classes. However, the algorithm in it's current state won't
@@ -93,41 +93,8 @@ public class ScheduleGenerator {
 										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
 											for (int day = 0; day < 5; day++) {
 												for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 4)); start++) {
-													Boolean availible = true;
-													for (int hour = 0; hour < ClassInfo.get(course).credits * 4; hour++) {
-														if (RoomInfo.get(room).timesUsed[day][start + hour]) {
-															availible = false;
-														}
-													}
-													if (availible) {
-														ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-														String startTime = Integer.toString((start / 4) + 7);
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														int end = start + ClassInfo.get(course).credits * 4;
-														String endTime = Integer.toString(end/4 + 7);
-														switch (end % 4) {
-															case 1: endTime += ":15";
-																break;
-															case 2: endTime += ":30";
-																break;
-															case 3: endTime += ":45";
-																break;
-															default: endTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-														ClassInfo.get(course).classtime[day][1] = endTime;
-														for (int i = 0; i < ClassInfo.get(course).credits * 4; i++) {
-															RoomInfo.get(course).timesUsed[day][start + i] = true;
-														}
+													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
+														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
 													}
 												}
@@ -135,41 +102,8 @@ public class ScheduleGenerator {
 										} else {
 											for (int day = 0; day < 5; day++) {
 												for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 4)); start++) {
-													Boolean availible = true;
-													for (int hour = 0; hour < ClassInfo.get(course).credits * 4; hour++) {
-														if (RoomInfo.get(room).timesUsed[day][start + hour]) {
-															availible = false;
-														}
-													}
-													if (availible) {
-														ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-														String startTime = Integer.toString((start / 4) + 7);
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														int end = start + ClassInfo.get(course).credits * 4;
-														String endTime = Integer.toString(end/4 + 7);
-														switch (end % 4) {
-															case 1: endTime += ":15";
-																break;
-															case 2: endTime += ":30";
-																break;
-															case 3: endTime += ":45";
-																break;
-															default: endTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-														ClassInfo.get(course).classtime[day][1] = endTime;
-														for (int i = 0; i < ClassInfo.get(course).credits * 4; i++) {
-															RoomInfo.get(course).timesUsed[day][start + i] = true;
-														}
+													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
+														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
 													}
 												}
@@ -179,162 +113,24 @@ public class ScheduleGenerator {
 										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
 											// First, check to see if 2 days with the same times are available.
 											for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 2)); start++) {
-												Boolean availible = true;
-												for (int hour = 0; hour < ClassInfo.get(course).credits * 2; hour++) {
-													if (RoomInfo.get(room).timesUsed[1][start + hour] == true) {
-														availible = false;
-													} else {
-														for (int day = 1; day < 5; day += 2) {
-															if (RoomInfo.get(room).timesUsed[day][start + hour])
-																availible = false;
-														}
-													}
-												}
-												if (availible) {
-													ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-													for (int day = 1; day < 5; day += 2) {
-														String startTime = Integer.toString(start / 4) + 7;
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														int end = start + (ClassInfo.get(course).credits * 2);
-														String endTime = Integer.toString(end/4 + 7);
-														switch (end % 4) {
-															case 1: endTime += ":15";
-																break;
-															case 2: endTime += ":30";
-																break;
-															case 3: endTime += ":45";
-																break;
-															default: endTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-														ClassInfo.get(course).classtime[day][1] = endTime;
-														for (int i = 0; i < (ClassInfo.get(course).credits * 2); i++) {
-															RoomInfo.get(course).timesUsed[day][start + i] = true;
-														}
-													}
+												if (twoDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start)) {
+													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
 											// If not, it then check if 3 days with the same times are available.
 											int remainder = ClassInfo.get(course).credits % 3;
 											for (int start = 0; start < (40 - ((Integer)(ClassInfo.get(course).credits * 4/3) + 4)); start++) {
-												Boolean availible = true;
-												for (int hour = 0; hour < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); hour++) {
-													if (RoomInfo.get(room).timesUsed[0][start + hour]) {
-														availible = false;
-													} else {
-														for (int day = 0; day < 5; day += 2) {
-															if (RoomInfo.get(room).timesUsed[day][start + hour])
-																availible = false;
-														}
-													}
-												}
-												if (availible) {
-													ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-													for (int day = 0; day < 5; day += 2) {
-														String startTime = Integer.toString(start / 4) + 7;
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-
-														if (day > 3) {
-															int end = start + (Integer)(ClassInfo.get(course).credits * 4/3);
-															String endTime = Integer.toString(end/4 + 7);
-															switch (end % 4) {
-																case 1: endTime += ":15";
-																	break;
-																case 2: endTime += ":30";
-																	break;
-																case 3: endTime += ":45";
-																	break;
-																default: endTime += ":00"; break;
-															}
-															
-															ClassInfo.get(course).classtime[day][1] = endTime;
-														} else {
-															int end = start + (Integer)(ClassInfo.get(course).credits * 4/3 + 4);
-															String endTime = Integer.toString(end/4 + 7);
-															switch (end % 4) {
-																case 1: endTime += ":15";
-																	break;
-																case 2: endTime += ":30";
-																	break;
-																case 3: endTime += ":45";
-																	break;
-																default: endTime += ":00"; break;
-															}
-															
-															ClassInfo.get(course).classtime[day][1] = endTime;
-														}
-														if(remainder > 0) {
-															for (int i = 0; i < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); i++) {
-																RoomInfo.get(course).timesUsed[day][start + i] = true;
-															}
-															remainder--;
-														} else {
-															for (int i = 0; i < (Integer)(ClassInfo.get(course).credits * 4/3); i++) {
-																RoomInfo.get(course).timesUsed[day][start + i] = true;
-															}
-														}
-													}
+												if (threeDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start, remainder)) {
+													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
 											// If that doesn't work, check for a single time on a single day point.
 											for (int day = 0; day < 5; day++) {
 												for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 4)); start++) {
-													Boolean availible = true;
-													for (int hour = 0; hour < ClassInfo.get(course).credits * 4; hour++) {
-														if (RoomInfo.get(room).timesUsed[day][start + hour]) {
-															availible = false;
-														}
-													}
-													if (availible) {
-														ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-														String startTime = Integer.toString((start / 4) + 7);
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														int end = start + ClassInfo.get(course).credits * 4;
-														String endTime = Integer.toString(end/4 + 7);
-														switch (end % 4) {
-															case 1: endTime += ":15";
-																break;
-															case 2: endTime += ":30";
-																break;
-															case 3: endTime += ":45";
-																break;
-															default: endTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-														ClassInfo.get(course).classtime[day][1] = endTime;
-														for (int i = 0; i < ClassInfo.get(course).credits; i++) {
-															RoomInfo.get(course).timesUsed[day][start + i] = true;
-														}
+													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
+														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
 													}
 												}
@@ -342,162 +138,24 @@ public class ScheduleGenerator {
 										} else {
 											// First, check to see if 2 days with the same times are available.
 											for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 2)); start++) {
-												Boolean availible = true;
-												for (int hour = 0; hour < ClassInfo.get(course).credits * 2; hour++) {
-													if (RoomInfo.get(room).timesUsed[1][start + hour]) {
-														availible = false;
-													} else {
-														for (int day = 1; day < 5; day += 2) {
-															if (RoomInfo.get(room).timesUsed[day][start + hour])
-																availible = false;
-														}
-													}
-												}
-												if (availible) {
-													ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-													for (int day = 1; day < 5; day += 2) {
-														String startTime = Integer.toString(start / 4) + 7;
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														int end = start + (ClassInfo.get(course).credits * 2);
-														String endTime = Integer.toString(end/4 + 7);
-														switch (end % 4) {
-															case 1: endTime += ":15";
-																break;
-															case 2: endTime += ":30";
-																break;
-															case 3: endTime += ":45";
-																break;
-															default: endTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-														ClassInfo.get(course).classtime[day][1] = endTime;
-														for (int i = 0; i < (ClassInfo.get(course).credits * 2); i++) {
-															RoomInfo.get(course).timesUsed[day][start + i] = true;
-														}
-													}
+												if (twoDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start)) {
+													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
 											// If not, it then check if 3 days with the same times are available.
 											int remainder = ClassInfo.get(course).credits % 3;
 											for (int start = 40; start < (58 - ((Integer)(ClassInfo.get(course).credits * 4/3) + 4)); start++) {
-												Boolean availible = true;
-												for (int hour = 0; hour < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); hour++) {
-													if (RoomInfo.get(room).timesUsed[0][start + hour]) {
-														availible = false;
-													} else {
-														for (int day = 0; day < 5; day += 2) {
-															if (RoomInfo.get(room).timesUsed[day][start + hour])
-																availible = false;
-														}
-													}
-												}
-												if (availible) {
-													ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-													for (int day = 0; day < 5; day += 2) {
-														String startTime = Integer.toString(start / 4) + 7;
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-
-														if (day > 3) {
-															int end = start + (Integer)(ClassInfo.get(course).credits * 4/3);
-															String endTime = Integer.toString(end/4 + 7);
-															switch (end % 4) {
-																case 1: endTime += ":15";
-																	break;
-																case 2: endTime += ":30";
-																	break;
-																case 3: endTime += ":45";
-																	break;
-																default: endTime += ":00"; break;
-															}
-															
-															ClassInfo.get(course).classtime[day][1] = endTime;
-														} else {
-															int end = start + (Integer)(ClassInfo.get(course).credits * 4/3 + 4);
-															String endTime = Integer.toString(end/4 + 7);
-															switch (end % 4) {
-																case 1: endTime += ":15";
-																	break;
-																case 2: endTime += ":30";
-																	break;
-																case 3: endTime += ":45";
-																	break;
-																default: endTime += ":00"; break;
-															}
-															
-															ClassInfo.get(course).classtime[day][1] = endTime;
-														}
-														if(remainder > 0) {
-															for (int i = 0; i < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); i++) {
-																RoomInfo.get(course).timesUsed[day][start + i] = true;
-															}
-															remainder--;
-														} else {
-															for (int i = 0; i < (Integer)(ClassInfo.get(course).credits * 4/3); i++) {
-																RoomInfo.get(course).timesUsed[day][start + i] = true;
-															}
-														}
-													}
+												if (threeDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start, remainder)) {
+													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
 											// If that doesn't work, check for a single time on a single day point.
 											for (int day = 0; day < 5; day++) {
 												for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 4)); start++) {
-													Boolean availible = true;
-													for (int hour = 0; hour < ClassInfo.get(course).credits * 4; hour++) {
-														if (RoomInfo.get(room).timesUsed[day][start + hour]) {
-															availible = false;
-														}
-													}
-													if (availible) {	
-														ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-														String startTime = Integer.toString((start / 4) + 7);
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														int end = start + ClassInfo.get(course).credits * 4;
-														String endTime = Integer.toString(end/4 + 7);
-														switch (end % 4) {
-															case 1: endTime += ":15";
-																break;
-															case 2: endTime += ":30";
-																break;
-															case 3: endTime += ":45";
-																break;
-															default: endTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-														ClassInfo.get(course).classtime[day][1] = endTime;
-														for (int i = 0; i < ClassInfo.get(course).credits; i++) {
-															RoomInfo.get(course).timesUsed[day][start + i] = true;
-														}
+													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
+														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
 													}
 												}
@@ -508,161 +166,23 @@ public class ScheduleGenerator {
 											// First, check if 3 days with the same times are available.
 											int remainder = ClassInfo.get(course).credits % 3;
 											for (int start = 0; start < (40 - ((Integer)(ClassInfo.get(course).credits * 4/3) + 4)); start++) {
-												Boolean availible = true;
-												for (int hour = 0; hour < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); hour++) {
-													if (RoomInfo.get(room).timesUsed[0][start + hour]) {
-														availible = false;
-													} else {
-														for (int day = 0; day < 5; day += 2) {
-															if (RoomInfo.get(room).timesUsed[day][start + hour])
-																availible = false;
-														}
-													}
-												}
-												if (availible) {	
-													ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-													for (int day = 0; day < 5; day += 2) {
-														String startTime = Integer.toString(start / 4) + 7;
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-
-														if (day > 3) {
-															int end = start + (Integer)(ClassInfo.get(course).credits * 4/3);
-															String endTime = Integer.toString(end/4 + 7);
-															switch (end % 4) {
-																case 1: endTime += ":15";
-																	break;
-																case 2: endTime += ":30";
-																	break;
-																case 3: endTime += ":45";
-																	break;
-																default: endTime += ":00"; break;
-															}
-															
-															ClassInfo.get(course).classtime[day][1] = endTime;
-														} else {
-															int end = start + (Integer)(ClassInfo.get(course).credits * 4/3 + 4);
-															String endTime = Integer.toString(end/4 + 7);
-															switch (end % 4) {
-																case 1: endTime += ":15";
-																	break;
-																case 2: endTime += ":30";
-																	break;
-																case 3: endTime += ":45";
-																	break;
-																default: endTime += ":00"; break;
-															}
-															
-															ClassInfo.get(course).classtime[day][1] = endTime;
-														}
-														if(remainder > 0) {
-															for (int i = 0; i < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); i++) {
-																RoomInfo.get(course).timesUsed[day][start + i] = true;
-															}
-															remainder--;
-														} else {
-															for (int i = 0; i < (Integer)(ClassInfo.get(course).credits * 4/3); i++) {
-																RoomInfo.get(course).timesUsed[day][start + i] = true;
-															}
-														}
-													}
+												if (threeDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start, remainder)) {
+													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
 											// If not, check to see if 2 days with the same times are available.
 											for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 2)); start++) {
-												Boolean availible = true;
-												for (int hour = 0; hour < ClassInfo.get(course).credits * 2; hour++) {
-													if (RoomInfo.get(room).timesUsed[1][start + hour]) {
-														availible = false;
-													} else {
-														for (int day = 1; day < 5; day += 2) {
-															if (RoomInfo.get(room).timesUsed[day][start + hour])
-																availible = false;
-														}
-													}
-												}
-												if (availible) {
-													ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-													for (int day = 1; day < 5; day += 2) {
-														String startTime = Integer.toString(start / 4) + 7;
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														int end = start + (ClassInfo.get(course).credits * 2);
-														String endTime = Integer.toString(end/4 + 7);
-														switch (end % 4) {
-															case 1: endTime += ":15";
-																break;
-															case 2: endTime += ":30";
-																break;
-															case 3: endTime += ":45";
-																break;
-															default: endTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-														ClassInfo.get(course).classtime[day][1] = endTime;
-														for (int i = 0; i < (ClassInfo.get(course).credits * 2); i++) {
-															RoomInfo.get(course).timesUsed[day][start + i] = true;
-														}
-													}
+												if (twoDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start)) {
+													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
 											// If that doesn't work, check for a single time on a single day point.
 											for (int day = 0; day < 5; day++) {
 												for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 4)); start++) {
-													Boolean availible = true;
-													for (int hour = 0; hour < ClassInfo.get(course).credits * 4; hour++) {
-														if (RoomInfo.get(room).timesUsed[day][start + hour]) {
-															availible = false;
-														}
-													}
-													if (availible) {
-														ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-														String startTime = Integer.toString((start / 4) + 7);
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														int end = start + ClassInfo.get(course).credits * 4;
-														String endTime = Integer.toString(end/4 + 7);
-														switch (end % 4) {
-															case 1: endTime += ":15";
-																break;
-															case 2: endTime += ":30";
-																break;
-															case 3: endTime += ":45";
-																break;
-															default: endTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-														ClassInfo.get(course).classtime[day][1] = endTime;
-														for (int i = 0; i < ClassInfo.get(course).credits; i++) {
-															RoomInfo.get(course).timesUsed[day][start + i] = true;
-														}
+													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
+														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
 													}
 												}
@@ -670,162 +190,24 @@ public class ScheduleGenerator {
 										} else {
 											// First, check to see if 2 days with the same times are available.
 											for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 2)); start++) {
-												Boolean availible = true;
-												for (int hour = 0; hour < ClassInfo.get(course).credits * 2; hour++) {
-													if (RoomInfo.get(room).timesUsed[1][start + hour]) {
-														availible = false;
-													} else {
-														for (int day = 1; day < 5; day += 2) {
-															if (RoomInfo.get(room).timesUsed[day][start + hour])
-																availible = false;
-														}
-													}
-												}
-												if (availible) {
-													ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-													for (int day = 1; day < 5; day += 2) {
-														String startTime = Integer.toString(start / 4) + 7;
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														int end = start + (ClassInfo.get(course).credits * 2);
-														String endTime = Integer.toString(end/4 + 7);
-														switch (end % 4) {
-															case 1: endTime += ":15";
-																break;
-															case 2: endTime += ":30";
-																break;
-															case 3: endTime += ":45";
-																break;
-															default: endTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-														ClassInfo.get(course).classtime[day][1] = endTime;
-														for (int i = 0; i < (ClassInfo.get(course).credits * 2); i++) {
-															RoomInfo.get(course).timesUsed[day][start + i] = true;
-														}
-													}
+												if (twoDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start)) {
+													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
 											// If not, it then check if 3 days with the same times are available.
 											int remainder = ClassInfo.get(course).credits % 3;
 											for (int start = 40; start < (58 - ((Integer)(ClassInfo.get(course).credits * 4/3) + 4)); start++) {
-												Boolean availible = true;
-												for (int hour = 0; hour < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); hour++) {
-													if (RoomInfo.get(room).timesUsed[0][start + hour]) {
-														availible = false;
-													} else {
-														for (int day = 0; day < 5; day += 2) {
-															if (RoomInfo.get(room).timesUsed[day][start + hour])
-																availible = false;
-														}
-													}
-												}
-												if (availible) {
-													ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-													for (int day = 0; day < 5; day += 2) {
-														String startTime = Integer.toString(start / 4) + 7;
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-
-														if (day > 3) {
-															int end = start + (Integer)(ClassInfo.get(course).credits * 4/3);
-															String endTime = Integer.toString(end/4 + 7);
-															switch (end % 4) {
-																case 1: endTime += ":15";
-																	break;
-																case 2: endTime += ":30";
-																	break;
-																case 3: endTime += ":45";
-																	break;
-																default: endTime += ":00"; break;
-															}
-															
-															ClassInfo.get(course).classtime[day][1] = endTime;
-														} else {
-															int end = start + (Integer)(ClassInfo.get(course).credits * 4/3 + 4);
-															String endTime = Integer.toString(end/4 + 7);
-															switch (end % 4) {
-																case 1: endTime += ":15";
-																	break;
-																case 2: endTime += ":30";
-																	break;
-																case 3: endTime += ":45";
-																	break;
-																default: endTime += ":00"; break;
-															}
-															
-															ClassInfo.get(course).classtime[day][1] = endTime;
-														}
-														if(remainder > 0) {
-															for (int i = 0; i < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); i++) {
-																RoomInfo.get(course).timesUsed[day][start + i] = true;
-															}
-															remainder--;
-														} else {
-															for (int i = 0; i < (Integer)(ClassInfo.get(course).credits * 4/3); i++) {
-																RoomInfo.get(course).timesUsed[day][start + i] = true;
-															}
-														}
-													}
+												if (threeDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start, remainder)) {
+													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
 											// If that doesn't work, check for a single time on a single day point.
 											for (int day = 0; day < 5; day++) {
 												for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 4)); start++) {
-													Boolean availible = true;
-													for (int hour = 0; hour < ClassInfo.get(course).credits * 4; hour++) {
-														if (RoomInfo.get(room).timesUsed[day][start + hour]) {
-															availible = false;
-														}
-													}
-													if (availible) {
-														ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-														String startTime = Integer.toString((start / 4) + 7);
-														switch (start % 4) {
-															case 1: startTime += ":15";
-																break;
-															case 2: startTime += ":30";
-																break;
-															case 3: startTime += ":45";
-																break;
-															default: startTime += ":00"; break;
-														}
-														int end = start + ClassInfo.get(course).credits * 4;
-														String endTime = Integer.toString(end/4 + 7);
-														switch (end % 4) {
-															case 1: endTime += ":15";
-																break;
-															case 2: endTime += ":30";
-																break;
-															case 3: endTime += ":45";
-																break;
-															default: endTime += ":00"; break;
-														}
-														
-														ClassInfo.get(course).classtime[day][0] = startTime;
-														ClassInfo.get(course).classtime[day][1] = endTime;
-														for (int i = 0; i < ClassInfo.get(course).credits; i++) {
-															RoomInfo.get(course).timesUsed[day][start + i] = true;
-														}
+													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
+														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
 													}
 												}
@@ -840,6 +222,167 @@ public class ScheduleGenerator {
 			}
 		}
 	}
-}
+	
+	static Boolean oneDayScheduling(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, int course, int room, int day, int start) {
+		Boolean availible = true;
+		for (int hour = 0; hour < ClassInfo.get(course).credits * 4; hour++) {
+			if (RoomInfo.get(room).timesUsed[day][start + hour]) {
+				availible = false;
+			}
+		}
+		if (availible) {
+			ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
+			String startTime = Integer.toString((start / 4) + 7);
+			switch (start % 4) {
+				case 1: startTime += ":15";
+					break;
+				case 2: startTime += ":30";
+					break;
+				case 3: startTime += ":45";
+					break;
+				default: startTime += ":00"; break;
+			}
+			int end = start + ClassInfo.get(course).credits * 4;
+			String endTime = Integer.toString(end/4 + 7);
+			switch (end % 4) {
+				case 1: endTime += ":15";
+					break;
+				case 2: endTime += ":30";
+					break;
+				case 3: endTime += ":45";
+					break;
+				default: endTime += ":00"; break;
+			}
+			
+			ClassInfo.get(course).classtime[day][0] = startTime;
+			ClassInfo.get(course).classtime[day][1] = endTime;
+			for (int i = 0; i < ClassInfo.get(course).credits * 4; i++) {
+				RoomInfo.get(room).timesUsed[day][start + i] = true;
+			}
+			// break courseLoop;
+		}
+		return availible;
+	}
+	
+	static Boolean twoDayScheduling(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, int course, int room, int start) {
+		Boolean availible = true;
+		for (int hour = 0; hour < ClassInfo.get(course).credits * 2; hour++) {
+			if (RoomInfo.get(room).timesUsed[1][start + hour]) {
+				availible = false;
+			} else {
+				for (int day = 1; day < 5; day += 2) {
+					if (RoomInfo.get(room).timesUsed[day][start + hour])
+						availible = false;
+				}
+			}
+		}
+		if (availible) {
+			ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
+			for (int day = 1; day < 5; day += 2) {
+				String startTime = Integer.toString(start / 4) + 7;
+				switch (start % 4) {
+					case 1: startTime += ":15";
+						break;
+					case 2: startTime += ":30";
+						break;
+					case 3: startTime += ":45";
+						break;
+					default: startTime += ":00"; break;
+				}
+				int end = start + (ClassInfo.get(course).credits * 2);
+				String endTime = Integer.toString(end/4 + 7);
+				switch (end % 4) {
+					case 1: endTime += ":15";
+						break;
+					case 2: endTime += ":30";
+						break;
+					case 3: endTime += ":45";
+						break;
+					default: endTime += ":00"; break;
+				}
+				
+				ClassInfo.get(course).classtime[day][0] = startTime;
+				ClassInfo.get(course).classtime[day][1] = endTime;
+				for (int i = 0; i < (ClassInfo.get(course).credits * 2); i++) {
+					RoomInfo.get(room).timesUsed[day][start + i] = true;
+				}
+			}
+			// break courseLoop;
+		}
+		return availible;
+	}
+	
+	static Boolean threeDayScheduling(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, int course, int room, int start, int remainder) {
+		Boolean availible = true;
+		for (int hour = 0; hour < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); hour++) {
+			if (RoomInfo.get(room).timesUsed[0][start + hour]) {
+				availible = false;
+			} else {
+				for (int day = 0; day < 5; day += 2) {
+					if (RoomInfo.get(room).timesUsed[day][start + hour])
+						availible = false;
+				}
+			}
+		}
+		if (availible) {
+			ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
+			for (int day = 0; day < 5; day += 2) {
+				String startTime = Integer.toString(start / 4) + 7;
+				switch (start % 4) {
+					case 1: startTime += ":15";
+						break;
+					case 2: startTime += ":30";
+						break;
+					case 3: startTime += ":45";
+						break;
+					default: startTime += ":00"; break;
+				}
+				
+				ClassInfo.get(course).classtime[day][0] = startTime;
 
-// Holy balls that was a lot.
+				if (day > 3) {
+					int end = start + (Integer)(ClassInfo.get(course).credits * 4/3);
+					String endTime = Integer.toString(end/4 + 7);
+					switch (end % 4) {
+						case 1: endTime += ":15";
+							break;
+						case 2: endTime += ":30";
+							break;
+						case 3: endTime += ":45";
+							break;
+						default: endTime += ":00"; break;
+					}
+					
+					ClassInfo.get(course).classtime[day][1] = endTime;
+				} else {
+					int end = start + (Integer)(ClassInfo.get(course).credits * 4/3 + 4);
+					String endTime = Integer.toString(end/4 + 7);
+					switch (end % 4) {
+						case 1: endTime += ":15";
+							break;
+						case 2: endTime += ":30";
+							break;
+						case 3: endTime += ":45";
+							break;
+						default: endTime += ":00"; break;
+					}
+					
+					ClassInfo.get(course).classtime[day][1] = endTime;
+				}
+				if(remainder > 0) {
+					for (int i = 0; i < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); i++) {
+						RoomInfo.get(room).timesUsed[day][start + i] = true;
+					}
+					remainder--;
+				} else {
+					for (int i = 0; i < (Integer)(ClassInfo.get(course).credits * 4/3); i++) {
+						RoomInfo.get(room).timesUsed[day][start + i] = true;
+					}
+				}
+			}
+			//break courseLoop;
+		}
+		return availible;
+	}
+	
+}

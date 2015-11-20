@@ -157,8 +157,9 @@ public class Main {
 				instructor = InstructorInfo.get(i).name;
 		}
 		Serialization.ClassInfo.add(new ClassInfo(fullName, instructor, instructorID, credits, maxCapacity, year, semester));
-		System.out.println("Class added!");
+		System.out.println(fullName + "added!");
 		System.out.println(" ");
+
 	}
 	
 	static void AddRoom(ArrayList<RoomInfo> RoomInfo) {
@@ -243,22 +244,31 @@ public class Main {
 		System.out.println(" ");
 	}
 	
-	static void Schedule(ArrayList<RoomInfo> RoomInfo,	ArrayList<ClassInfo> ClassInfo,	ArrayList<InstructorInfo> InstructorInfo) {
+	static void Schedule(ArrayList<RoomInfo> RoomInfo,	ArrayList<ClassInfo> ClassInfo,	ArrayList<InstructorInfo> InstructorInfo) {	
 		
 		ScheduleGenerator.Generate(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo);
 		
+		System.out.println(" ");
+		System.out.println("FULL SCHEDULE:");
+		System.out.println(" ");
+		
 		String days = "";
+		String semester = null;
 		String startTime = null;
 		String endTime = null;
-		String search = null;
-		Boolean pass = false;
-		Boolean again = false;
-		ArrayList<ClassInfo> SearchResults = new ArrayList<>();
-		
-		@SuppressWarnings("resource")
-		Scanner input = new Scanner( System.in );
 		
 		for (int i = 0; i < Serialization.ClassInfo.size(); i++) {
+			days = "";
+			
+			switch (ClassInfo.get(i).semester) {
+			case 1: semester = "Spring";
+				break;
+			case 2: semester = "Summer";
+				break;
+			default: semester = "Fall";
+				break;
+			}
+			
 			for (int j = 0; j < 5; j++){
 				for (int k = 0; k < 2; k++){
 					if (k == 0 && ClassInfo.get(i).classtime[j][k] != null) {
@@ -278,12 +288,34 @@ public class Main {
 			}
 			
 			System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
-					+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Classtime: " + days + " " + startTime + "-" + endTime);
+					+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
+					+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
 			System.out.println(" ");
 		}
-		do {
+		
+		Search(RoomInfo, ClassInfo, InstructorInfo);
+		
+	}
+	
+	static void Search(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo,	ArrayList<InstructorInfo> InstructorInfo) { 
+		String days = "";
+		String semester = null;
+		String startTime = null;
+		String endTime = null;
+		String search = null;
+		Boolean pass = false;
+		Boolean again = false;
+		ArrayList<ClassInfo> SearchResults = new ArrayList<>();
+		
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner( System.in );
+		
+		do {		
 			System.out.print("Search by class, faculty, or room: ");
 			search = input.nextLine();
+			
+			System.out.println(" ");
+			System.out.println("SEARCH RESULTS:");
 			System.out.println(" ");
 			
 			SearchResults.clear();
@@ -344,6 +376,16 @@ public class Main {
 			if (pass) {
 				
 				for (int i = 0; i < SearchResults.size(); i++) {
+					
+					switch (SearchResults.get(i).semester) {
+					case 1: semester = "Spring";
+						break;
+					case 2: semester = "Summer";
+						break;
+					default: semester = "Fall";
+						break;
+					}
+					
 					for (int j = 0; j < 5; j++){
 						for (int k = 0; k < 2; k++){
 							if (k == 0 && SearchResults.get(i).classtime[j][k] != null) {
@@ -362,8 +404,9 @@ public class Main {
 						}
 					}
 					
-					System.out.println("Name: " + SearchResults.get(i).fullName + " Instructor: " + SearchResults.get(i).instructor + " Room Number: " + SearchResults.get(i).roomNumber 
-							+ " Credits: " + SearchResults.get(i).credits + " Max Capacity: " + SearchResults.get(i).maxCapacity + " Classtime: " + days + " " + startTime + "-" + endTime);
+					System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
+							+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
+							+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
 					System.out.println(" ");
 				}
 				

@@ -15,6 +15,11 @@ public class Serialization {
 	static ArrayList<InstructorInfo> InstructorInfo = new ArrayList<>();
 	
 	public static void ReadObjects() {
+		// Clear the arrays before reading the information back in.
+		RoomInfo.clear();
+		ClassInfo.clear();
+		InstructorInfo.clear();
+		
 		// Reads objects from the RoomInfo.dat file into the RoomInfo ArrayList.
 		try (FileInputStream fi = new FileInputStream("RoomInfo.dat")) {
 			ObjectInputStream os = new ObjectInputStream(fi);

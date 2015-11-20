@@ -39,7 +39,6 @@ public class InstructorInfo implements Serializable {
 			this.classes.remove(index);
 	}
 
-	   
 	@Override
 	public String toString() {
 		String classList = "";
