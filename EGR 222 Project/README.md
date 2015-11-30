@@ -1,9 +1,21 @@
 # EGR 222 Project
 So this covers the basics of what we need to accomplish for the project. It isn't the prettiest. It isn't always the most efficient. But it works. Feel free to fix anything that needs fixing or neaten anything that could be organized better. If you have any questions about the project (because I know it's a LOT to take in at once), feel free to text me or stop me after class and I'll try my best to explain what I did and why.
--Caleb
+- Caleb
 
 TO-DO:
 
-- Add class sections. (The program could search for any matches to the first 6 characters, and if there is, it can give the option to either type a new class or add a section to that class, which would simply add an "A" or "B" to the fullName variable).
+- Add class sections. (IN MAIN FILE, ADCLASS FUNCTION) The program could search for any matches to the first 6 characters, and if there is, it can give the option to either type a new class or add a section to that class, which would simply add an "A", "B", "C", .etc to the fullName variable(JOSEPH).
 
-- Convert the startTime and endTime variables from the 24 hour system to the 12 hour system.
+- Convert the startTime and endTime variables from the 24 hour system to the 12 hour system (CALEB).
+
+- Add searching by semester (MAIN FILE, SEARCH FUNCTION)(NICK).
+
+- Choosing how many days a week (CALEB).
+
+- Adding hybrid classes (Half of the hours in-class, the other half online)(CALEB).
+
+- Computer lab? How many computers? Projector?(LOWEST PRIORITY).
+
+- Allow the user to register an instructor or classroom if the add class function gives an error because the room or instructor is not registered (Just take the user to the class function from the add class function and then break the add class function when the thing is registered.)(JOSE).
+
+- Allow the user to go to the menu at all times (JOSE).
