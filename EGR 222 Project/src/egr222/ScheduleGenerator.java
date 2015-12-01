@@ -87,6 +87,7 @@ public class ScheduleGenerator {
 							if (ClassInfo.get(course).maxCapacity <= RoomInfo.get(roomNum).maxCapacity) {
 								// If the class can't fit the schedule, the program will go to the room before it to find a spot.
 								for (int room = roomNum; room >= 0; room--) {
+									// Checks to see if a given day has time available.
 									// The times assigned changes if the course is a 500+ course.
 									if (ClassInfo.get(course).schedulingType == 1) {
 										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
@@ -108,61 +109,26 @@ public class ScheduleGenerator {
 												}
 											}
 										}
+										// Checks to see if 2 days with the same times are available.
 									} else if (ClassInfo.get(course).schedulingType == 2) {
 										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
-											// First, check to see if 2 days with the same times are available.
 											for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 2)); start++) {
 												if (twoDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start)) {
 													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
-											// If not, it then check if 3 days with the same times are available.
-											int remainder = ClassInfo.get(course).credits % 3;
-											for (int start = 0; start < (40 - ((Integer)(ClassInfo.get(course).credits * 4/3) + 4)); start++) {
-												if (threeDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start, remainder)) {
-													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
-													break courseLoop;
-												}
-											}
-											// If that doesn't work, check for a single time on a single day point.
-											for (int day = 0; day < 5; day++) {
-												for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 4)); start++) {
-													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
-														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
-														break courseLoop;
-													}
-												}
-											}
 										} else {
-											// First, check to see if 2 days with the same times are available.
 											for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 2)); start++) {
 												if (twoDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start)) {
 													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
-											// If not, it then check if 3 days with the same times are available.
-											int remainder = ClassInfo.get(course).credits % 3;
-											for (int start = 40; start < (58 - ((Integer)(ClassInfo.get(course).credits * 4/3) + 4)); start++) {
-												if (threeDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start, remainder)) {
-													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
-													break courseLoop;
-												}
-											}
-											// If that doesn't work, check for a single time on a single day point.
-											for (int day = 0; day < 5; day++) {
-												for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 4)); start++) {
-													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
-														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
-														break courseLoop;
-													}
-												}
-											}
-										}	
+										}
+										// Checks to see if 3 days with the same times are available.
 									} else if (ClassInfo.get(course).schedulingType == 3) {
 										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
-											// First, check if 3 days with the same times are available.
 											int remainder = ClassInfo.get(course).credits % 3;
 											for (int start = 0; start < (40 - ((Integer)(ClassInfo.get(course).credits * 4/3) + 4)); start++) {
 												if (threeDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start, remainder)) {
@@ -170,31 +136,7 @@ public class ScheduleGenerator {
 													break courseLoop;
 												}
 											}
-											// If not, check to see if 2 days with the same times are available.
-											for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 2)); start++) {
-												if (twoDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start)) {
-													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
-													break courseLoop;
-												}
-											}
-											// If that doesn't work, check for a single time on a single day point.
-											for (int day = 0; day < 5; day++) {
-												for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 4)); start++) {
-													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
-														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
-														break courseLoop;
-													}
-												}
-											}
 										} else {
-											// First, check to see if 2 days with the same times are available.
-											for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 2)); start++) {
-												if (twoDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start)) {
-													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
-													break courseLoop;
-												}
-											}
-											// If not, it then check if 3 days with the same times are available.
 											int remainder = ClassInfo.get(course).credits % 3;
 											for (int start = 40; start < (58 - ((Integer)(ClassInfo.get(course).credits * 4/3) + 4)); start++) {
 												if (threeDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start, remainder)) {
@@ -202,16 +144,9 @@ public class ScheduleGenerator {
 													break courseLoop;
 												}
 											}
-											// If that doesn't work, check for a single time on a single day point.
-											for (int day = 0; day < 5; day++) {
-												for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 4)); start++) {
-													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
-														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
-														break courseLoop;
-													}
-												}
-											}
-										}	
+										}
+										// Checks to see if a given day has time available for half the classes hours.
+										// The other half will be online.
 									} else {
 										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
 											for (int day = 0; day < 5; day++) {

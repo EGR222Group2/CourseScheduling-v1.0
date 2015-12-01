@@ -19,3 +19,5 @@ TO-DO:
 - Allow the user to register an instructor or classroom if the add class function gives an error because the room or instructor is not registered (Just take the user to the class function from the add class function and then break the add class function when the thing is registered.)(JOSE).
 
 - Allow the user to go to the menu at all times (JOSE).
+
+- Error catching. It would be nice if this included a system that would put classes that were unable to be scheduled into an array list and then show that list to the user, telling them those classes were unable to be scheduled (BLAKE).
