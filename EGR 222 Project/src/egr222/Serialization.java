@@ -21,12 +21,22 @@ public class Serialization {
 		InstructorInfo.clear();
 		
 		// Reads objects from the RoomInfo.dat file into the RoomInfo ArrayList.
-		try (FileInputStream fi = new FileInputStream("RoomInfo.dat")) {
-			ObjectInputStream os = new ObjectInputStream(fi);
-			while (fi.available() > 0) {
-				RoomInfo.add((RoomInfo)os.readObject());
+		File roomFile = new File("RoomInfo.dat");
+		try {
+			if(!roomFile.exists()){ // create new file if needed
+				roomFile.createNewFile();
 			}
-			os.close();
+			
+			FileInputStream fi = new FileInputStream(roomFile);
+			
+			if(fi.available() > 0){
+				ObjectInputStream os = new ObjectInputStream(fi);
+				
+				while (fi.available() > 0) {
+					RoomInfo.add((RoomInfo)os.readObject());
+				}
+				os.close();
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,12 +49,22 @@ public class Serialization {
 		}
 		
 		// Reads objects from the ClassInfo.dat file into the ClassInfo ArrayList.
-		try (FileInputStream fi = new FileInputStream("ClassInfo.dat")) {
-			ObjectInputStream os = new ObjectInputStream(fi);
-			while (fi.available() > 0) {
-				ClassInfo.add((ClassInfo)os.readObject());
+		File courseFile = new File("CourseInfo.dat");
+		try  {
+			if(!courseFile.exists()){ // create new file if needed
+				courseFile.createNewFile();
 			}
-			os.close();
+			
+			FileInputStream fi = new FileInputStream(courseFile);
+			
+			if(fi.available() > 0){
+				ObjectInputStream os = new ObjectInputStream(fi);
+				
+				while (fi.available() > 0) {
+					ClassInfo.add((ClassInfo)os.readObject());
+				}
+				os.close();
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,12 +77,22 @@ public class Serialization {
 		}
 		
 		// Reads objects from the InstructorInfo.dat file into the InstructorInfo ArrayList.
-		try (FileInputStream fi = new FileInputStream("InstructorInfo.dat")) {
-			ObjectInputStream os = new ObjectInputStream(fi);
-			while (fi.available() > 0) {
-				InstructorInfo.add((InstructorInfo)os.readObject());
+		File instructorFile = new File("InstructorInfo.dat");
+		try{
+			if(!instructorFile.exists()){ // create new file if needed
+				instructorFile.createNewFile();
 			}
-			os.close();
+			
+			FileInputStream fi = new FileInputStream(instructorFile);
+			
+			if(fi.available() > 0){
+				ObjectInputStream os = new ObjectInputStream(fi);
+			
+				while (fi.available() > 0) {
+					InstructorInfo.add((InstructorInfo)os.readObject());
+				}
+				os.close();
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
