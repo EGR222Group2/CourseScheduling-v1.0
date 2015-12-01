@@ -77,7 +77,7 @@ public class Main {
 		do {
 			pass = true;
 			fullName = input.nextLine();
-			if (fullName.length() > 6 || !fullName.substring(0,3).matches("[a-zA-Z]+") || !fullName.substring(3).matches("[-+]?\\d*\\.?\\d+")) {
+			if (fullName.length() != 6 || !fullName.substring(0,3).matches("[a-zA-Z]+") || !fullName.substring(3).matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering the 6 letter/number notation for the course (e.g. 'EGR101', 'MAT245', 'ENG123', etc.) again: ");
 				pass = false;
 			}
@@ -347,6 +347,7 @@ public class Main {
 				5. If the entry contains the room number of the class. */
 			for (int i = 0; i < ClassInfo.size(); i ++) {
 				if(search.length() >= 3) {
+					// This narrows searches to the number part.
 					if (search.matches("[-+]?\\d*\\.?\\d+") && search.equals(ClassInfo.get(i).fullName.substring(3,6))) {
 						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
 						for (int j = 0; j < SearchResults.size(); j++) {
@@ -360,7 +361,8 @@ public class Main {
 							}
 						}
 						pass = true;
-					} else if (search.length() == 3 && search.equals(ClassInfo.get(i).fullName.substring(0,3))) {							
+						// This narrows searches to the first 3 letters.
+					} else if (search.length() == 3 && search.equals(ClassInfo.get(i).fullName.substring(0,3))) { 						
 						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
 						for (int j = 0; j < SearchResults.size(); j++) {
 							if (ClassInfo.get(i).fullName.equals(SearchResults.get(j).fullName)) {
@@ -373,6 +375,7 @@ public class Main {
 							}
 						}
 						pass = true;
+						// This searches for an entire string, such as the entire class name or the entire instructor ID.
 					} else if (search.equals(ClassInfo.get(i).fullName) || search.equals(ClassInfo.get(i).instructor) || search.equals(ClassInfo.get(i).instructorID) || search.equals(ClassInfo.get(i).roomNumber)){
 						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
 						for (int j = 0; j < SearchResults.size(); j++) {

@@ -8,11 +8,11 @@ TO-DO:
 
 - COMPLETED: Convert the startTime and endTime variables from the 24 hour system to the 12 hour system (CALEB).
 
-- Add searching by semester (MAIN FILE, SEARCH FUNCTION)(NICK).
+- Modify the search filters (MAIN FILE, SEARCH FUNCTION, I'm guessing this could be done between lines 348 and 394). The new version should have the ability to search by the class name (e.g. "EGR101") as well as the class name and section(e.g. "EGR101B"), the semester or year (or both), in addition to the already established stuff and anything else you think should be a search filter (NICK).
 
-- Choosing how many days a week (CALEB).
+- COMPLETED: Choosing how many days a week (CALEB).
 
-- Adding hybrid classes (Half of the hours in-class, the other half online)(CALEB).
+- COMPLETED: Adding hybrid classes (Half of the hours in-class, the other half online)(CALEB).
 
 - Computer lab? How many computers? Projector?(LOWEST PRIORITY).
 

@@ -87,9 +87,8 @@ public class ScheduleGenerator {
 							if (ClassInfo.get(course).maxCapacity <= RoomInfo.get(roomNum).maxCapacity) {
 								// If the class can't fit the schedule, the program will go to the room before it to find a spot.
 								for (int room = roomNum; room >= 0; room--) {
-									// The number of credits changes which days it tries to schedule first.
-									// In addition, the times assigned changes if the course is a 500+ course.
-									if (ClassInfo.get(course).credits <= 2) {
+									// The times assigned changes if the course is a 500+ course.
+									if (ClassInfo.get(course).schedulingType == 1) {
 										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
 											for (int day = 0; day < 5; day++) {
 												for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 4)); start++) {
@@ -109,7 +108,7 @@ public class ScheduleGenerator {
 												}
 											}
 										}
-									} else if (ClassInfo.get(course).credits % 2 == 0) {
+									} else if (ClassInfo.get(course).schedulingType == 2) {
 										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
 											// First, check to see if 2 days with the same times are available.
 											for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 2)); start++) {
@@ -161,7 +160,7 @@ public class ScheduleGenerator {
 												}
 											}
 										}	
-									} else {
+									} else if (ClassInfo.get(course).schedulingType == 3) {
 										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
 											// First, check if 3 days with the same times are available.
 											int remainder = ClassInfo.get(course).credits % 3;
@@ -213,6 +212,26 @@ public class ScheduleGenerator {
 												}
 											}
 										}	
+									} else {
+										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
+											for (int day = 0; day < 5; day++) {
+												for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 4)); start++) {
+													if (HybridScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
+														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
+														break courseLoop;
+													}
+												}
+											}
+										} else {
+											for (int day = 0; day < 5; day++) {
+												for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 4)); start++) {
+													if (HybridScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
+														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
+														break courseLoop;
+													}
+												}
+											}
+										}
 									}
 								}
 							}
@@ -477,4 +496,60 @@ public class ScheduleGenerator {
 		return availible;
 	}
 	
+	static Boolean HybridScheduling(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, int course, int room, int day, int start) {
+		Boolean availible = true;
+		for (int hour = 0; hour < ClassInfo.get(course).credits * 4; hour++) {
+			if (RoomInfo.get(room).timesUsed[day][start + hour]) {
+				availible = false;
+			}
+		}
+		if (availible) {
+			ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
+			String startTime = Integer.toString((start / 4) + 7);
+			
+			switch (start % 4) {
+				case 1: startTime += ":15";
+				break;
+				case 2: startTime += ":30";
+				break;
+				case 3: startTime += ":45";
+				break;
+				default: startTime += ":00"; break;
+			}
+			
+			int end = start + ClassInfo.get(course).credits * 4;
+			String endTime = Integer.toString(end/4 + 7);
+			
+			switch (end % 4) {
+				case 1: endTime += ":15";
+				break;
+				case 2: endTime += ":30";
+				break;
+				case 3: endTime += ":45";
+				break;
+				default: endTime += ":00"; break;
+			}
+			
+			if (((start / 4) + 7) >= 13) {
+				startTime += "p";
+			} else {
+				startTime += "a";
+			}
+			if (((end / 4) + 7) >= 13) {
+				endTime += "p";
+			} else {
+				endTime += "a";
+			}
+			
+			ClassInfo.get(course).classtime[day][0] = startTime;
+			ClassInfo.get(course).classtime[day][1] = endTime;
+			
+			for (int i = 0; i < ClassInfo.get(course).credits * 2; i++) {
+				RoomInfo.get(room).timesUsed[day][start + i] = true;
+			}
+			ClassInfo.get(course).roomNumber += "/ONLINE";
+		}
+		return availible;
+	}
+
 }
