@@ -231,8 +231,25 @@ public class ScheduleGenerator {
 			}
 		}
 		if (availible) {
+			String startTime = null;
+			String endTime = null;
+			int end = start + ClassInfo.get(course).credits * 4;
+			
 			ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
-			String startTime = Integer.toString((start / 4) + 7);
+			
+			// Converts the start and end times to the 12 hour cycle.
+			if (((start / 4) + 7) >= 13) {
+				startTime = Integer.toString(((start / 4) + 7) - 12);
+			} else {
+				startTime = Integer.toString((start / 4) + 7);
+			}
+			
+			if (((end / 4) + 7) >= 13) {
+				endTime = Integer.toString((end/4 + 7) - 12);
+			} else {
+				endTime = Integer.toString(end/4 + 7);
+			}
+			
 			switch (start % 4) {
 				case 1: startTime += ":15";
 					break;
@@ -242,8 +259,7 @@ public class ScheduleGenerator {
 					break;
 				default: startTime += ":00"; break;
 			}
-			int end = start + ClassInfo.get(course).credits * 4;
-			String endTime = Integer.toString(end/4 + 7);
+			
 			switch (end % 4) {
 				case 1: endTime += ":15";
 					break;
@@ -254,12 +270,22 @@ public class ScheduleGenerator {
 				default: endTime += ":00"; break;
 			}
 			
+			if (((start / 4) + 7) >= 13) {
+				startTime += "p";
+			} else {
+				startTime += "a";
+			}
+			if (((end / 4) + 7) >= 13) {
+				endTime += "p";
+			} else {
+				endTime += "a";
+			}
+			
 			ClassInfo.get(course).classtime[day][0] = startTime;
 			ClassInfo.get(course).classtime[day][1] = endTime;
 			for (int i = 0; i < ClassInfo.get(course).credits * 4; i++) {
 				RoomInfo.get(room).timesUsed[day][start + i] = true;
 			}
-			// break courseLoop;
 		}
 		return availible;
 	}
@@ -279,7 +305,23 @@ public class ScheduleGenerator {
 		if (availible) {
 			ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
 			for (int day = 1; day < 5; day += 2) {
-				String startTime = Integer.toString(start / 4) + 7;
+				String startTime = null;
+				String endTime = null;
+				int end = start + ClassInfo.get(course).credits * 2;
+				
+				// Converts the start and end times to the 12 hour cycle.
+				if (((start / 4) + 7) >= 13) {
+					startTime = Integer.toString(((start / 4) + 7) - 12);
+				} else {
+					startTime = Integer.toString((start / 4) + 7);
+				}
+				
+				if (((end / 4) + 7) >= 13) {
+					endTime = Integer.toString((end/4 + 7) - 12);
+				} else {
+					endTime = Integer.toString(end/4 + 7);
+				}
+				
 				switch (start % 4) {
 					case 1: startTime += ":15";
 						break;
@@ -289,8 +331,7 @@ public class ScheduleGenerator {
 						break;
 					default: startTime += ":00"; break;
 				}
-				int end = start + (ClassInfo.get(course).credits * 2);
-				String endTime = Integer.toString(end/4 + 7);
+				
 				switch (end % 4) {
 					case 1: endTime += ":15";
 						break;
@@ -301,13 +342,23 @@ public class ScheduleGenerator {
 					default: endTime += ":00"; break;
 				}
 				
+				if (((start / 4) + 7) >= 13) {
+					startTime += "p";
+				} else {
+					startTime += "a";
+				}
+				if (((end / 4) + 7) >= 13) {
+					endTime += "p";
+				} else {
+					endTime += "a";
+				}
+				
 				ClassInfo.get(course).classtime[day][0] = startTime;
 				ClassInfo.get(course).classtime[day][1] = endTime;
 				for (int i = 0; i < (ClassInfo.get(course).credits * 2); i++) {
 					RoomInfo.get(room).timesUsed[day][start + i] = true;
 				}
 			}
-			// break courseLoop;
 		}
 		return availible;
 	}
@@ -327,7 +378,15 @@ public class ScheduleGenerator {
 		if (availible) {
 			ClassInfo.get(course).roomNumber = RoomInfo.get(room).roomNumber;
 			for (int day = 0; day < 5; day += 2) {
-				String startTime = Integer.toString(start / 4) + 7;
+				String startTime = null;
+				
+				// Converts the start time to the 12 hour cycle.
+				if (((start / 4) + 7) >= 13) {
+					startTime = Integer.toString(((start / 4) + 7) - 12);
+				} else {
+					startTime = Integer.toString((start / 4) + 7);
+				}
+				
 				switch (start % 4) {
 					case 1: startTime += ":15";
 						break;
@@ -338,11 +397,25 @@ public class ScheduleGenerator {
 					default: startTime += ":00"; break;
 				}
 				
+				if (((start / 4) + 7) >= 13) {
+					startTime += "p";
+				} else {
+					startTime += "a";
+				}
+				
 				ClassInfo.get(course).classtime[day][0] = startTime;
 
 				if (day > 3) {
+					String endTime = null;
 					int end = start + (Integer)(ClassInfo.get(course).credits * 4/3);
-					String endTime = Integer.toString(end/4 + 7);
+					
+					// Converts the end time to the 12 hour cycle.
+					if (((end / 4) + 7) >= 13) {
+						endTime = Integer.toString((end/4 + 7) - 12);
+					} else {
+						endTime = Integer.toString(end/4 + 7);
+					}
+					
 					switch (end % 4) {
 						case 1: endTime += ":15";
 							break;
@@ -353,10 +426,24 @@ public class ScheduleGenerator {
 						default: endTime += ":00"; break;
 					}
 					
+					if (((end / 4) + 7) >= 13) {
+						endTime += "p";
+					} else {
+						endTime += "a";
+					}
+					
 					ClassInfo.get(course).classtime[day][1] = endTime;
 				} else {
 					int end = start + (Integer)(ClassInfo.get(course).credits * 4/3 + 4);
 					String endTime = Integer.toString(end/4 + 7);
+					
+					// Converts the end time to the 12 hour cycle.
+					if (((end / 4) + 7) >= 13) {
+						endTime = Integer.toString((end/4 + 7) - 12);
+					} else {
+						endTime = Integer.toString(end/4 + 7);
+					}
+					
 					switch (end % 4) {
 						case 1: endTime += ":15";
 							break;
@@ -365,6 +452,12 @@ public class ScheduleGenerator {
 						case 3: endTime += ":45";
 							break;
 						default: endTime += ":00"; break;
+					}
+					
+					if (((end / 4) + 7) >= 13) {
+						endTime += "p";
+					} else {
+						endTime += "a";
 					}
 					
 					ClassInfo.get(course).classtime[day][1] = endTime;
@@ -380,7 +473,6 @@ public class ScheduleGenerator {
 					}
 				}
 			}
-			//break courseLoop;
 		}
 		return availible;
 	}

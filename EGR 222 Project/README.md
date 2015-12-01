@@ -6,7 +6,7 @@ TO-DO:
 
 - Add class sections. (IN MAIN FILE, ADCLASS FUNCTION) The program could search for any matches to the first 6 characters, and if there is, it can give the option to either type a new class or add a section to that class, which would simply add an "A", "B", "C", .etc to the fullName variable(JOSEPH).
 
-- Convert the startTime and endTime variables from the 24 hour system to the 12 hour system (CALEB).
+- COMPLETED: Convert the startTime and endTime variables from the 24 hour system to the 12 hour system (CALEB).
 
 - Add searching by semester (MAIN FILE, SEARCH FUNCTION)(NICK).
 

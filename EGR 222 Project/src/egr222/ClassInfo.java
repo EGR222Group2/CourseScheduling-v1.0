@@ -14,6 +14,7 @@ public class ClassInfo implements Serializable {
 	String instructorID;
 	String roomNumber;
 	int credits;
+	int schedulingType;
 	int maxCapacity;
 	int year;
 	int semester;
@@ -22,13 +23,14 @@ public class ClassInfo implements Serializable {
 	// The second holds the starting and ending time of class for that specific day. 
 	String [][] classtime = new String[5][2];
 	
-	public ClassInfo(String fullName, String instructor, String instructorID, int credits, int maxCapacity, int year, int semester){
+	public ClassInfo(String fullName, String instructor, String instructorID, int credits, int schedulingType, int maxCapacity, int year, int semester){
 		this.fullName = fullName;
 		this.division = fullName.substring(0,3);
 		this.section = fullName.substring(3,6);
 		this.instructor = instructor;
 		this.instructorID = instructorID;
 		this.credits = credits;
+		this.schedulingType = schedulingType;
 		this.maxCapacity = maxCapacity;
 		this.year = year;
 		this.semester = semester;

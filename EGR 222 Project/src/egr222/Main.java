@@ -62,6 +62,7 @@ public class Main {
 		String instructor = " ";
 		String instructorID;
 		int credits;
+		int schedulingType = 0;
 		int maxCapacity = 0;
 		int year;
 		int semester;
@@ -114,6 +115,21 @@ public class Main {
 		System.out.print("Awesome! Now enter in the number of credits for this course:");
 		credits = input.nextInt();
 		
+		System.out.println("What kind of scheduling would you prefer?");
+		System.out.println("");
+		System.out.println("1. One class meeting per week");
+		System.out.println("2. Two class meetings per week");
+		System.out.println("3. Three class meetings per week");
+		System.out.println("4. Hybrid scheduling (Half of the hours in class, the other half online).");
+		System.out.println("");
+		System.out.print("Type in the number corresponding to your choice: ");
+		do {
+			schedulingType = input.nextInt();
+			if (schedulingType < 1 || schedulingType > 4)
+				System.out.print("Whoops, that entry is invalid! Try typing in the number corresponding to your choice again: ");
+		} while(schedulingType < 1 && schedulingType > 4);
+
+		
 		System.out.print("Fantastic, only a few more details! Enter in the maximum capacity of the class:");
 		String stringToInt;
 		do {
@@ -156,7 +172,7 @@ public class Main {
 				InstructorInfo.get(i).classes.add(fullName);
 				instructor = InstructorInfo.get(i).name;
 		}
-		Serialization.ClassInfo.add(new ClassInfo(fullName, instructor, instructorID, credits, maxCapacity, year, semester));
+		Serialization.ClassInfo.add(new ClassInfo(fullName, instructor, instructorID, credits, schedulingType, maxCapacity, year, semester));
 		System.out.println(fullName + "added!");
 		System.out.println(" ");
 
@@ -332,7 +348,7 @@ public class Main {
 			for (int i = 0; i < ClassInfo.size(); i ++) {
 				if(search.length() >= 3) {
 					if (search.matches("[-+]?\\d*\\.?\\d+") && search.equals(ClassInfo.get(i).fullName.substring(3,6))) {
-						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
+						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
 						for (int j = 0; j < SearchResults.size(); j++) {
 							if (ClassInfo.get(i).fullName.equals(SearchResults.get(j).fullName)) {
 								SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
@@ -345,7 +361,7 @@ public class Main {
 						}
 						pass = true;
 					} else if (search.length() == 3 && search.equals(ClassInfo.get(i).fullName.substring(0,3))) {							
-						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
+						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
 						for (int j = 0; j < SearchResults.size(); j++) {
 							if (ClassInfo.get(i).fullName.equals(SearchResults.get(j).fullName)) {
 								SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
@@ -358,7 +374,7 @@ public class Main {
 						}
 						pass = true;
 					} else if (search.equals(ClassInfo.get(i).fullName) || search.equals(ClassInfo.get(i).instructor) || search.equals(ClassInfo.get(i).instructorID) || search.equals(ClassInfo.get(i).roomNumber)){
-						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
+						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
 						for (int j = 0; j < SearchResults.size(); j++) {
 							if (ClassInfo.get(i).fullName.equals(SearchResults.get(j).fullName)) {
 								SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
