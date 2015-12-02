@@ -21,7 +21,7 @@ public class Serialization {
 		InstructorInfo.clear();
 		
 		// Reads objects from the RoomInfo.dat file into the RoomInfo ArrayList.
-		File roomFile = new File("RoomInfo.dat");
+		File roomFile = new File("RoomInfo.txt");
 		try {
 			if(!roomFile.exists()){ // create new file if needed
 				roomFile.createNewFile();
@@ -48,8 +48,8 @@ public class Serialization {
 			e.printStackTrace();
 		}
 		
-		// Reads objects from the ClassInfo.dat file into the ClassInfo ArrayList.
-		File courseFile = new File("CourseInfo.dat");
+		// Reads objects from the CourseInfo.txt file into the ClassInfo ArrayList.
+		File courseFile = new File("CourseInfo.txt");
 		try  {
 			if(!courseFile.exists()){ // create new file if needed
 				courseFile.createNewFile();
@@ -77,7 +77,7 @@ public class Serialization {
 		}
 		
 		// Reads objects from the InstructorInfo.dat file into the InstructorInfo ArrayList.
-		File instructorFile = new File("InstructorInfo.dat");
+		File instructorFile = new File("InstructorInfo.txt");
 		try{
 			if(!instructorFile.exists()){ // create new file if needed
 				instructorFile.createNewFile();
@@ -120,7 +120,7 @@ public class Serialization {
 		
 	public static void WriteObjects() {
 		// Writes Room Info to file.
-		try (FileOutputStream fs = new FileOutputStream("RoomInfo.dat")) {			
+		try (FileOutputStream fs = new FileOutputStream("RoomInfo.txt")) {			
 			ObjectOutputStream os = new ObjectOutputStream(fs);
 			for (int i = 0; i < RoomInfo.size(); i++) {
 				os.writeObject(RoomInfo.get(i));
@@ -135,7 +135,7 @@ public class Serialization {
 		}
 		
 		// Writes Class Info to file.
-		try (FileOutputStream fs = new FileOutputStream("ClassInfo.dat")) {			
+		try (FileOutputStream fs = new FileOutputStream("CourseInfo.txt")) {			
 			ObjectOutputStream os = new ObjectOutputStream(fs);
 			for (int i = 0; i < ClassInfo.size(); i++) {
 				os.writeObject(ClassInfo.get(i));
@@ -150,7 +150,7 @@ public class Serialization {
 		}
 		
 		// Writes Instructor Info to file.
-		try (FileOutputStream fs = new FileOutputStream("InstructorInfo.dat")) {			
+		try (FileOutputStream fs = new FileOutputStream("InstructorInfo.txt")) {			
 			ObjectOutputStream os = new ObjectOutputStream(fs);
 			for (int i = 0; i < InstructorInfo.size(); i++) {
 				os.writeObject(InstructorInfo.get(i));
@@ -168,7 +168,7 @@ public class Serialization {
 	public static void FileReset() {
 		File f = null;
 		
-		f = new File("ClassInfo.dat");
+		f = new File("CourseInfo.txt");
 		f.delete();
 		try {
 			f.createNewFile();
@@ -177,7 +177,7 @@ public class Serialization {
 			e.printStackTrace();
 		}
 		
-		f = new File("RoomInfo.dat");
+		f = new File("RoomInfo.txt");
 		f.delete();
 		try {
 			f.createNewFile();
@@ -186,7 +186,7 @@ public class Serialization {
 			e.printStackTrace();
 		}
 		
-		f = new File("InstructorInfo.dat");
+		f = new File("InstructorInfo.txt");
 		f.delete();
 		try {
 			f.createNewFile();
