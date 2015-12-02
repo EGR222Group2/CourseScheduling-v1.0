@@ -70,25 +70,26 @@ public class ScheduleGenerator {
 	// Assumes that the courses have been arranged by credit count, highest to lowest.
 	// In addition, it assumes the rooms have been arranged from highest max capacity to lowest. 
 	public static void AssignCourses(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo) {
-		ArrayList<String> NotScheduled = new ArrayList<String>();
+		//ArrayList<String> NotScheduled = new ArrayList<String>();
 		int maxYear = 0;
 		
 		//find the maxYear
 		for(int numOfCourses = 0; numOfCourses < ClassInfo.size(); numOfCourses++) {
-			if(ClassInfo.get(numOfCourses).year > maxYear)
+			if(ClassInfo.get(numOfCourses).year > maxYear){
 				maxYear = ClassInfo.get(numOfCourses).year;
+			}
 		}
 		
 		
 		// Cycles through year.
-		for (int year = 2000; year < maxYear; year++) {
+		for (int year = 2000; year <= maxYear; year++) {
 			// 3 semesters (Spring, Summer, Fall)
 			for (int semester = 1; semester <= 3; semester++) {
 				// Cycles through courses.
 				for (int course = 0; course < ClassInfo.size(); course++) {
 					// Enters into a loop and will exit once a course has been found.
 					courseLoop:
-					if(ClassInfo.get(course).year == year  && ClassInfo.get(course).semester == semester && ClassInfo.get(course).classtime[0][0] == null) {
+					if(ClassInfo.get(course).year == year && ClassInfo.get(course).semester == semester && ClassInfo.get(course).classtime[0][0] == null) {
 						for (int roomNum= 0; roomNum < RoomInfo.size(); roomNum++) {
 							/*	Tries to find find the smallest possible room for the course so rooms with a large capacity
 								will never be unavailable for large classes. However, the algorithm in it's current state won't
@@ -173,8 +174,6 @@ public class ScheduleGenerator {
 													if (HybridScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
 														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
-													} else {
-														NotScheduled.add(ClassInfo.get(course).fullName);
 													}
 												}
 											}
@@ -187,16 +186,6 @@ public class ScheduleGenerator {
 				}
 			}
 		}
-		
-		//find any courses that weren't scheduled
-		if(!NotScheduled.isEmpty()){
-			System.out.println("\n" + "COURSES NOT SCHEDULED: ");
-			for(int i = 0; i < NotScheduled.size(); i++){
-				System.out.println(NotScheduled.get(i));
-			}
-		}
-		
-		
 	}
 	
 	static Boolean oneDayScheduling(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, int course, int room, int day, int start) {

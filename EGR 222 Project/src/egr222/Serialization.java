@@ -48,8 +48,8 @@ public class Serialization {
 			e.printStackTrace();
 		}
 		
-		// Reads objects from the CourseInfo.txt file into the ClassInfo ArrayList.
-		File courseFile = new File("CourseInfo.txt");
+		// Reads objects from the CourseInfo.dat file into the ClassInfo ArrayList.
+		File courseFile = new File("ClassInfo.txt");
 		try  {
 			if(!courseFile.exists()){ // create new file if needed
 				courseFile.createNewFile();
@@ -135,7 +135,7 @@ public class Serialization {
 		}
 		
 		// Writes Class Info to file.
-		try (FileOutputStream fs = new FileOutputStream("CourseInfo.txt")) {			
+		try (FileOutputStream fs = new FileOutputStream("ClassInfo.txt")) {			
 			ObjectOutputStream os = new ObjectOutputStream(fs);
 			for (int i = 0; i < ClassInfo.size(); i++) {
 				os.writeObject(ClassInfo.get(i));
@@ -168,7 +168,7 @@ public class Serialization {
 	public static void FileReset() {
 		File f = null;
 		
-		f = new File("CourseInfo.txt");
+		f = new File("ClassInfo.txt");
 		f.delete();
 		try {
 			f.createNewFile();
