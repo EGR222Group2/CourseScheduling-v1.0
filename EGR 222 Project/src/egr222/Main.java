@@ -173,7 +173,7 @@ public class Main {
 				instructor = InstructorInfo.get(i).name;
 		}
 		Serialization.ClassInfo.add(new ClassInfo(fullName, instructor, instructorID, credits, schedulingType, maxCapacity, year, semester));
-		System.out.println(fullName + "added!");
+		System.out.println(fullName + " added!");
 		System.out.println(" ");
 
 	}
