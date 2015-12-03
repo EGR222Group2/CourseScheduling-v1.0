@@ -20,7 +20,7 @@ public class Main {
 					break;
 				case 3:	AddInstructor(Serialization.InstructorInfo);
 					break;
-				case 4: Schedule(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo);
+				case 4: Schedule(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo, Serialization.NotScheduled);
 					break;
 				default: quit = true;
 					break;
@@ -72,20 +72,20 @@ public class Main {
 		Scanner input = new Scanner( System.in );
 		
 		System.out.println("ADD COURSE");
-		System.out.print("Let's start off by entering the 6 letter/number notation for the course (e.g. 'EGR101', 'MAT245', 'ENG123', etc.):");
+		System.out.print("Let's start off by entering the 6 letter/number Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.):");
 		
 		do {
 			pass = true;
 			fullName = input.nextLine();
 			if (fullName.length() != 6 || !fullName.substring(0,3).matches("[a-zA-Z]+") || !fullName.substring(3).matches("[-+]?\\d*\\.?\\d+")) {
-				System.out.print("Oh no, this is an invalid entry! Try entering the 6 letter/number notation for the course (e.g. 'EGR101', 'MAT245', 'ENG123', etc.) again: ");
+				System.out.print("Oh no, this is an invalid entry! Try entering the Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.) again: ");
 				pass = false;
 			}
 			if(pass) {
 				System.out.println(fullName);
 				for (int i = 0; i < Serialization.ClassInfo.size(); i++) {
 					if(fullName.equals(Serialization.ClassInfo.get(i).fullName)){
-						System.out.print("Whoops! This class name is already registered. Try entering the 6 letter/number notation for the course (e.g. 'EGR101', 'MAT245', 'ENG123', etc.) again: ");
+						System.out.print("Whoops! This class name is already registered. Try entering the Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.) again: ");
 						pass = false;
 
 					}
@@ -260,9 +260,9 @@ public class Main {
 		System.out.println(" ");
 	}
 	
-	static void Schedule(ArrayList<RoomInfo> RoomInfo,	ArrayList<ClassInfo> ClassInfo,	ArrayList<InstructorInfo> InstructorInfo) {	
+	static void Schedule(ArrayList<RoomInfo> RoomInfo,	ArrayList<ClassInfo> ClassInfo,	ArrayList<InstructorInfo> InstructorInfo, ArrayList <String> NotScheduled) {	
 		
-		ScheduleGenerator.Generate(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo);
+		ScheduleGenerator.Generate(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo, Serialization.NotScheduled);
 		
 		System.out.println(" ");
 		System.out.println("FULL SCHEDULE:");
@@ -302,11 +302,21 @@ public class Main {
 					}
 				}
 			}
-			
-			System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
-					+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
-					+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
+			if(Serialization.ClassInfo.get(i).roomNumber != null){
+				System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
+						+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
+						+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
+				System.out.println(" ");
+			}
+		}
+		
+		if(!NotScheduled.isEmpty()){
+			System.out.println("UNABLE TO SCHEDULE: ");
 			System.out.println(" ");
+			for(int i = 0; i < NotScheduled.size(); i++){
+				System.out.println("Name: " + Serialization.NotScheduled.get(i));
+				System.out.println(" ");
+			}
 		}
 		
 		Search(RoomInfo, ClassInfo, InstructorInfo);
@@ -327,7 +337,7 @@ public class Main {
 		Scanner input = new Scanner( System.in );
 		
 		do {		
-			System.out.print("Search by class, faculty, or room: ");
+			System.out.print("Enter a Course ID, Instructor ID, or Room Number to search: ");
 			search = input.nextLine();
 			
 			System.out.println(" ");

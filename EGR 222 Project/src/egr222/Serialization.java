@@ -13,6 +13,7 @@ public class Serialization {
 	static ArrayList<RoomInfo> RoomInfo = new ArrayList<>();
 	static ArrayList<ClassInfo> ClassInfo = new ArrayList<>();
 	static ArrayList<InstructorInfo> InstructorInfo = new ArrayList<>();
+	static ArrayList<String> NotScheduled = new ArrayList<String>();
 	
 	public static void ReadObjects() {
 		// Clear the arrays before reading the information back in.
