@@ -22,8 +22,9 @@ public class Main {
 					break;
 				case 4: Schedule(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo, Serialization.NotScheduled);
 					break;
-				default: quit = true;
+				case 5:quit = true;
 					break;
+				default: System.out.println("Sorry that's an invalid input. Please try again.");
 			}
 			Serialization.FileReset();
 			Serialization.WriteObjects();
@@ -264,7 +265,6 @@ public class Main {
 		
 		ScheduleGenerator.Generate(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo, Serialization.NotScheduled);
 		
-		System.out.println(" ");
 		System.out.println("FULL SCHEDULE:");
 		System.out.println(" ");
 		

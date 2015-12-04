@@ -107,7 +107,6 @@ public class ScheduleGenerator {
 											for (int day = 0; day < 5; day++) {
 												for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 4)); start++) {
 													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
-														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
 													}
 												}
@@ -116,7 +115,6 @@ public class ScheduleGenerator {
 											for (int day = 0; day < 5; day++) {
 												for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 4)); start++) {
 													if (oneDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
-														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
 													}
 												}
@@ -127,14 +125,12 @@ public class ScheduleGenerator {
 										if (Integer.parseInt(ClassInfo.get(course).section) < 500) {
 											for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 2)); start++) {
 												if (twoDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start)) {
-													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
 										} else {
 											for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 2)); start++) {
 												if (twoDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start)) {
-													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
@@ -145,7 +141,6 @@ public class ScheduleGenerator {
 											int remainder = ClassInfo.get(course).credits % 3;
 											for (int start = 0; start < (40 - ((Integer)(ClassInfo.get(course).credits * 4/3) + 4)); start++) {
 												if (threeDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start, remainder)) {
-													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
@@ -153,7 +148,6 @@ public class ScheduleGenerator {
 											int remainder = ClassInfo.get(course).credits % 3;
 											for (int start = 40; start < (58 - ((Integer)(ClassInfo.get(course).credits * 4/3) + 4)); start++) {
 												if (threeDayScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, start, remainder)) {
-													System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 													break courseLoop;
 												}
 											}
@@ -165,7 +159,6 @@ public class ScheduleGenerator {
 											for (int day = 0; day < 5; day++) {
 												for (int start = 0; start < (40 - (ClassInfo.get(course).credits * 4)); start++) {
 													if (HybridScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
-														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
 													}
 												}
@@ -174,7 +167,6 @@ public class ScheduleGenerator {
 											for (int day = 0; day < 5; day++) {
 												for (int start = 40; start < (58 - (ClassInfo.get(course).credits * 4)); start++) {
 													if (HybridScheduling(RoomInfo, ClassInfo, InstructorInfo, course, room, day, start)) {
-														System.out.println("Scheduled " + ClassInfo.get(course).fullName);
 														break courseLoop;
 													}
 												}
