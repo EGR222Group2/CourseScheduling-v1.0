@@ -28,6 +28,7 @@ public class ScheduleGenerator {
 					ClassInfo.get(i).classtime[j][k] = null;
 				}
 			}
+			ClassInfo.get(i).roomNumber = null;
 		}
 		
 		for (int i = 0; i < InstructorInfo.size(); i++) {
@@ -191,9 +192,6 @@ public class ScheduleGenerator {
 		for(int i = 0; i < ClassInfo.size(); i++){
 			if(ClassInfo.get(i).roomNumber == null){
 				NotScheduled.add(ClassInfo.get(i).fullName);
-				ClassInfo.get(i).roomNumber = "Not Assigned";
-				ClassInfo.get(i).classtime[0][0] = "Not Assigned";
-				ClassInfo.get(i).classtime[0][1] = "Not Assigned";
 			}
 		}
 		

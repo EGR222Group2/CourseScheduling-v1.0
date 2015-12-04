@@ -302,7 +302,7 @@ public class Main {
 					}
 				}
 			}
-			if(Serialization.ClassInfo.get(i).roomNumber != "Not Assigned"){
+			if(Serialization.ClassInfo.get(i).roomNumber != null){
 				System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
 						+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
 						+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
@@ -337,8 +337,12 @@ public class Main {
 		Scanner input = new Scanner( System.in );
 		
 		do {		
-			System.out.print("Enter a Course ID, Instructor ID, or Room Number to search: ");
+			System.out.print("Enter a Course ID, Instructor ID or name, or Room Number to search, or enter \"n\" to exit: ");
 			search = input.nextLine();
+			
+			if(search.equals("n") || search.equals("N")){
+				return;
+			}
 			
 			System.out.println(" ");
 			System.out.println("SEARCH RESULTS:");
@@ -405,6 +409,7 @@ public class Main {
 			if (pass) {
 				
 				for (int i = 0; i < SearchResults.size(); i++) {
+					days = "";
 					
 					switch (SearchResults.get(i).semester) {
 					case 1: semester = "Spring";
@@ -433,13 +438,13 @@ public class Main {
 						}
 					}
 					
-					if(Serialization.ClassInfo.get(i).roomNumber != "Not Assigned"){
+					if(Serialization.ClassInfo.get(i).roomNumber != null){
 						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
 								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
 								+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
 						System.out.println(" ");
-					} else if(Serialization.ClassInfo.get(i).roomNumber == "Not Assigned"){
-						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
+					} else if(Serialization.ClassInfo.get(i).roomNumber == null){
+						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + "Not Assigned"  
 								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
 								+ " Semester: " + semester + " Classtime: " + "Not Assigned");
 						System.out.println(" ");
