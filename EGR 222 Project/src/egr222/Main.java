@@ -22,8 +22,9 @@ public class Main {
 					break;
 				case 4: Schedule(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo, Serialization.NotScheduled);
 					break;
-				default: quit = true;
+				case 5:quit = true;
 					break;
+				default: System.out.println("Sorry that's an invalid input. Please try again.");
 			}
 			Serialization.FileReset();
 			Serialization.WriteObjects();
@@ -72,7 +73,7 @@ public class Main {
 		Scanner input = new Scanner( System.in );
 		
 		System.out.println("ADD COURSE");
-		System.out.print("Let's start off by entering the 6 letter/number Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.):");
+		System.out.print("Let's start off by entering the 6 letter/number Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.): ");
 		
 		do {
 			pass = true;
@@ -93,7 +94,7 @@ public class Main {
 			}
 		} while (!pass);
 		
-		System.out.print("Great! Now let's add the course's instructor. Enter in the instructors unique 6-digit ID:");
+		System.out.print("Great! Now let's add the course's instructor. Enter in the instructors unique 6-digit ID: ");
 		
 		do {
 			pass = true;
@@ -108,11 +109,11 @@ public class Main {
 						pass = true;
 				}
 				if (!pass)
-					System.out.print("Uh oh, this instructor is not registered! Try entering in a different instructors unique 6-digit ID:");
+					System.out.print("Uh oh, this instructor is not registered! Try entering in a different instructors unique 6-digit ID: ");
 			}
 		} while (!pass);
 						
-		System.out.print("Awesome! Now enter in the number of credits for this course:");
+		System.out.print("Awesome! Now enter in the number of credits for this course: ");
 		credits = input.nextInt();
 		
 		System.out.println("What kind of scheduling would you prefer?");
@@ -130,7 +131,7 @@ public class Main {
 		} while(schedulingType < 1 && schedulingType > 4);
 
 		
-		System.out.print("Fantastic, only a few more details! Enter in the maximum capacity of the class:");
+		System.out.print("Fantastic, only a few more details! Enter in the maximum capacity of the class: ");
 		String stringToInt;
 		do {
 			pass = true;
@@ -145,10 +146,10 @@ public class Main {
 				pass = false;
 		} while(!pass);
 		
-		System.out.print("Good. Now enter in the year this class will start:");
+		System.out.print("Good. Now enter in the year this class will start: ");
 		year = input.nextInt();
 		
-		System.out.println("Finally, we'll select the semester of the course");
+		System.out.println("Finally, we'll select the semester of the course ");
 		System.out.println(" ");
 		System.out.println("1. Spring");
 		System.out.println("2. Summer");
@@ -264,7 +265,6 @@ public class Main {
 		
 		ScheduleGenerator.Generate(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo, Serialization.NotScheduled);
 		
-		System.out.println(" ");
 		System.out.println("FULL SCHEDULE:");
 		System.out.println(" ");
 		
@@ -287,7 +287,7 @@ public class Main {
 			
 			for (int j = 0; j < 5; j++){
 				for (int k = 0; k < 2; k++){
-					if (k == 0 && ClassInfo.get(i).classtime[j][k] != null) {
+					if (k == 0 && ClassInfo.get(i).classtime[j][k] != null && ClassInfo.get(i).roomNumber != "Not Assigned") {
 						
 						switch (j) {
 						case 0: days += "M"; break;
@@ -337,8 +337,12 @@ public class Main {
 		Scanner input = new Scanner( System.in );
 		
 		do {		
-			System.out.print("Enter a Course ID, Instructor ID, or Room Number to search: ");
+			System.out.print("Enter a Course ID, Instructor ID or name, or Room Number to search, or enter \"n\" to exit: ");
 			search = input.nextLine();
+			
+			if(search.equals("n") || search.equals("N")){
+				return;
+			}
 			
 			System.out.println(" ");
 			System.out.println("SEARCH RESULTS:");
@@ -405,6 +409,7 @@ public class Main {
 			if (pass) {
 				
 				for (int i = 0; i < SearchResults.size(); i++) {
+					days = "";
 					
 					switch (SearchResults.get(i).semester) {
 					case 1: semester = "Spring";
@@ -433,10 +438,17 @@ public class Main {
 						}
 					}
 					
-					System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
-							+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
-							+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
-					System.out.println(" ");
+					if(Serialization.ClassInfo.get(i).roomNumber != null){
+						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
+								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
+								+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
+						System.out.println(" ");
+					} else if(Serialization.ClassInfo.get(i).roomNumber == null){
+						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + "Not Assigned"  
+								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
+								+ " Semester: " + semester + " Classtime: " + "Not Assigned");
+						System.out.println(" ");
+					}
 				}
 				
 			} else {
