@@ -256,7 +256,7 @@ public class ScheduleGenerator {
 			
 			ClassInfo.get(course).classtime[day][0] = startTime;
 			ClassInfo.get(course).classtime[day][1] = endTime;
-			for (int i = 0; i < ClassInfo.get(course).credits * 4; i++) {
+			for (int i = 0; i <= ClassInfo.get(course).credits * 4; i++) {
 				RoomInfo.get(room).timesUsed[day][start + i] = true;
 			}
 		}
@@ -328,7 +328,7 @@ public class ScheduleGenerator {
 				
 				ClassInfo.get(course).classtime[day][0] = startTime;
 				ClassInfo.get(course).classtime[day][1] = endTime;
-				for (int i = 0; i < (ClassInfo.get(course).credits * 2); i++) {
+				for (int i = 0; i <= (ClassInfo.get(course).credits * 2); i++) {
 					RoomInfo.get(room).timesUsed[day][start + i] = true;
 				}
 			}
@@ -452,7 +452,7 @@ public class ScheduleGenerator {
 	
 	static Boolean HybridScheduling(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, int course, int room, int day, int start) {
 		Boolean availible = true;
-		for (int hour = 0; hour < ClassInfo.get(course).credits * 4; hour++) {
+		for (int hour = 0; hour < ClassInfo.get(course).credits * 2; hour++) {
 			if (RoomInfo.get(room).timesUsed[day][start + hour]) {
 				availible = false;
 			}
@@ -471,7 +471,7 @@ public class ScheduleGenerator {
 				default: startTime += ":00"; break;
 			}
 			
-			int end = start + ClassInfo.get(course).credits * 4;
+			int end = start + ClassInfo.get(course).credits * 2;
 			String endTime = Integer.toString(end/4 + 7);
 			
 			switch (end % 4) {
@@ -498,7 +498,7 @@ public class ScheduleGenerator {
 			ClassInfo.get(course).classtime[day][0] = startTime;
 			ClassInfo.get(course).classtime[day][1] = endTime;
 			
-			for (int i = 0; i < ClassInfo.get(course).credits * 2; i++) {
+			for (int i = 0; i <= ClassInfo.get(course).credits * 2; i++) {
 				RoomInfo.get(room).timesUsed[day][start + i] = true;
 			}
 			ClassInfo.get(course).roomNumber += "/ONLINE";
