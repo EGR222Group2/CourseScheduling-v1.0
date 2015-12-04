@@ -191,6 +191,9 @@ public class ScheduleGenerator {
 		for(int i = 0; i < ClassInfo.size(); i++){
 			if(ClassInfo.get(i).roomNumber == null){
 				NotScheduled.add(ClassInfo.get(i).fullName);
+				ClassInfo.get(i).roomNumber = "Not Assigned";
+				ClassInfo.get(i).classtime[0][0] = "Not Assigned";
+				ClassInfo.get(i).classtime[0][1] = "Not Assigned";
 			}
 		}
 		
