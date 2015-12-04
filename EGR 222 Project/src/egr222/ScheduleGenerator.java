@@ -6,14 +6,14 @@ import java.util.Comparator;
 
 public class ScheduleGenerator {
 	
-	public static void Generate(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo) {
-		ResetSchedule(RoomInfo, ClassInfo, InstructorInfo);
+	public static void Generate(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, ArrayList<String> NotScheduled) {
+		ResetSchedule(RoomInfo, ClassInfo, InstructorInfo, NotScheduled);
 		Organize(RoomInfo, ClassInfo);
-		AssignCourses(RoomInfo, ClassInfo, InstructorInfo);
+		AssignCourses(RoomInfo, ClassInfo, InstructorInfo, NotScheduled);
 	}
 	
 	// Clears all object of their current schedules.
-	public static void ResetSchedule(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo) {
+	public static void ResetSchedule(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, ArrayList<String> NotScheduled) {
 		for (int i = 0; i < RoomInfo.size(); i++) {
 			for (int j = 0; j < 5; j++){
 				for (int k = 0; k < 58; k++){
@@ -37,6 +37,8 @@ public class ScheduleGenerator {
 				}
 			}
 		}
+		
+		Serialization.NotScheduled.clear();
 	}
 	
 	// Sorts the courses by credits and rooms by maximum capacity(both high to low).
@@ -69,8 +71,7 @@ public class ScheduleGenerator {
 	
 	// Assumes that the courses have been arranged by credit count, highest to lowest.
 	// In addition, it assumes the rooms have been arranged from highest max capacity to lowest. 
-	public static void AssignCourses(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo) {
-		//ArrayList<String> NotScheduled = new ArrayList<String>();
+	public static void AssignCourses(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, ArrayList<String> NotScheduled) {
 		int maxYear = 0;
 		
 		//find the maxYear
@@ -186,6 +187,13 @@ public class ScheduleGenerator {
 				}
 			}
 		}
+		
+		for(int i = 0; i < ClassInfo.size(); i++){
+			if(ClassInfo.get(i).roomNumber == null){
+				NotScheduled.add(ClassInfo.get(i).fullName);
+			}
+		}
+		
 	}
 	
 	static Boolean oneDayScheduling(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, int course, int room, int day, int start) {
