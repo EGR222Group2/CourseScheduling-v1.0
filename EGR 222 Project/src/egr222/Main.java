@@ -77,7 +77,7 @@ public class Main {
 		
 		do {
 			pass = true;
-			fullName = input.nextLine();
+			fullName = input.nextLine().toUpperCase();
 			if (fullName.length() != 6 || !fullName.substring(0,3).matches("[a-zA-Z]+") || !fullName.substring(3).matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering the Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.) again: ");
 				pass = false;
@@ -98,7 +98,7 @@ public class Main {
 		
 		do {
 			pass = true;
-			instructorID = input.nextLine();
+			instructorID = input.nextLine().toUpperCase();
 			if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering in the instructors unique 6-digit ID again: ");
 				pass = false;
@@ -237,7 +237,7 @@ public class Main {
 		
 		do {
 			pass = true;
-			instructorID = input.nextLine();
+			instructorID = input.nextLine().toUpperCase();
 			if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering in the instructors unique 6-digit ID again: ");
 				pass = false;
@@ -253,7 +253,7 @@ public class Main {
 		} while (!pass);
 		
 		System.out.print("Now just enter in the instructor's name: ");
-		name = input.nextLine();
+		name = input.nextLine().toUpperCase();
 		
 		// Add the things to the other things.
 		Serialization.InstructorInfo.add(new InstructorInfo(name, instructorID));
@@ -277,11 +277,11 @@ public class Main {
 			days = "";
 			
 			switch (ClassInfo.get(i).semester) {
-			case 1: semester = "Spring";
+			case 1: semester = "SPRING";
 				break;
-			case 2: semester = "Summer";
+			case 2: semester = "SUMMER";
 				break;
-			default: semester = "Fall";
+			default: semester = "FALL";
 				break;
 			}
 			
@@ -338,7 +338,7 @@ public class Main {
 		
 		do {		
 			System.out.print("Enter a Course ID, Instructor ID or name, or Room Number to search, or enter \"n\" to exit: ");
-			search = input.nextLine();
+			search = input.nextLine().toUpperCase();
 			
 			if(search.equals("n") || search.equals("N")){
 				return;
@@ -412,11 +412,11 @@ public class Main {
 					days = "";
 					
 					switch (SearchResults.get(i).semester) {
-					case 1: semester = "Spring";
+					case 1: semester = "SPRING";
 						break;
-					case 2: semester = "Summer";
+					case 2: semester = "SUMMER";
 						break;
-					default: semester = "Fall";
+					default: semester = "FALL";
 						break;
 					}
 					
@@ -444,9 +444,9 @@ public class Main {
 								+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
 						System.out.println(" ");
 					} else if(Serialization.ClassInfo.get(i).roomNumber == null){
-						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + "Not Assigned"  
+						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + "NOT ASSIGNED"  
 								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
-								+ " Semester: " + semester + " Classtime: " + "Not Assigned");
+								+ " Semester: " + semester + " Classtime: " + "NOT ASSIGNED");
 						System.out.println(" ");
 					}
 				}
