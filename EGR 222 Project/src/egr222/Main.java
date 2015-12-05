@@ -7,22 +7,22 @@ public class Main {
 	public static void main(String args[]) {
 
 		Boolean quit = false;
-		int task = 0;
+		String task = "0";
 		
 		do {			
 			task = Menu();
 			Serialization.ReadObjects();
 			
 			switch (task) {
-				case 1: AddCourse(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo);
+				case "1": AddCourse(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo);
 					break;
-				case 2: AddRoom(Serialization.RoomInfo);
+				case "2": AddRoom(Serialization.RoomInfo);
 					break;
-				case 3:	AddInstructor(Serialization.InstructorInfo);
+				case "3":	AddInstructor(Serialization.InstructorInfo);
 					break;
-				case 4: Schedule(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo, Serialization.NotScheduled);
+				case "4": Schedule(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo, Serialization.NotScheduled);
 					break;
-				case 5:quit = true;
+				case "5":quit = true;
 					break;
 				default: System.out.println("Sorry that's an invalid input. Please try again.");
 			}
@@ -34,7 +34,7 @@ public class Main {
 		System.exit(0);
 	}
 	
-	static int Menu() {
+	static String Menu() {
 		System.out.println("Welcome to the California Baptist University catalog creator!");
 		System.out.println("What would you like to do today?");
 		System.out.println(" ");
@@ -49,10 +49,8 @@ public class Main {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner( System.in );
 		
-		int task = 0;
-		do {
-			task = input.nextInt();
-		} while (task <= 0 && task > 5);
+		String task = "0";
+		task = input.nextLine();
 		System.out.println(" ");
 		
 		return task;
