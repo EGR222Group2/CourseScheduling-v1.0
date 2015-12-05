@@ -7,22 +7,22 @@ public class Main {
 	public static void main(String args[]) {
 
 		Boolean quit = false;
-		int task = 0;
+		String task = "0";
 		
 		do {			
 			task = Menu();
 			Serialization.ReadObjects();
 			
 			switch (task) {
-				case 1: AddCourse(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo);
+				case "1": AddCourse(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo);
 					break;
-				case 2: AddRoom(Serialization.RoomInfo);
+				case "2": AddRoom(Serialization.RoomInfo);
 					break;
-				case 3:	AddInstructor(Serialization.InstructorInfo);
+				case "3":	AddInstructor(Serialization.InstructorInfo);
 					break;
-				case 4: Schedule(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo, Serialization.NotScheduled);
+				case "4": Schedule(Serialization.RoomInfo, Serialization.ClassInfo, Serialization.InstructorInfo, Serialization.NotScheduled);
 					break;
-				case 5:quit = true;
+				case "5":quit = true;
 					break;
 				default: System.out.println("Sorry that's an invalid input. Please try again.");
 			}
@@ -34,8 +34,12 @@ public class Main {
 		System.exit(0);
 	}
 	
+<<<<<<< HEAD
+	static String Menu() {
+=======
 	static int Menu() {
 		System.out.println(" ");
+>>>>>>> master
 		System.out.println("Welcome to the California Baptist University catalog creator!");
 		System.out.println("What would you like to do today?");
 		System.out.println(" ");
@@ -51,10 +55,8 @@ public class Main {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner( System.in );
 		
-		int task = 0;
-		do {
-			task = input.nextInt();
-		} while (task <= 0 && task > 5);
+		String task = "0";
+		task = input.nextLine();
 		System.out.println(" ");
 		
 		return task;
@@ -79,12 +81,16 @@ public class Main {
 		
 		do {
 			pass = true;
+<<<<<<< HEAD
+			fullName = input.nextLine().toUpperCase();
+=======
 			fullName = input.nextLine();
 			if(fullName.substring(0).matches("e"))
 			{
 				System.out.println("Going back to the main menu.");
 				return;
 			}
+>>>>>>> master
 			if (fullName.length() != 6 || !fullName.substring(0,3).matches("[a-zA-Z]+") || !fullName.substring(3).matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering the Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.) again: ");
 				pass = false;
@@ -105,6 +111,9 @@ public class Main {
 		
 		do {
 			pass = true;
+<<<<<<< HEAD
+			instructorID = input.nextLine().toUpperCase();
+=======
 			instructorID = input.nextLine();
 			if(instructorID.substring(0).matches("e"))
 			{				
@@ -116,6 +125,7 @@ public class Main {
 				AddInstructor(Serialization.InstructorInfo);
 				return;
 			}
+>>>>>>> master
 			if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering in the instructors unique 6-digit ID again: ");
 				pass = false;
@@ -346,12 +356,16 @@ public class Main {
 		
 		do {
 			pass = true;
+<<<<<<< HEAD
+			instructorID = input.nextLine().toUpperCase();
+=======
 			instructorID = input.nextLine();
 			if(instructorID.matches("e"))
 			{
 				System.out.println("Going back to the main menu.");
 				return;
 			}
+>>>>>>> master
 			if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering in the instructors unique 6-digit ID again: ");
 				pass = false;
@@ -367,6 +381,10 @@ public class Main {
 		} while (!pass);
 		
 		System.out.print("Now just enter in the instructor's name: ");
+<<<<<<< HEAD
+		name = input.nextLine().toUpperCase();
+		
+=======
 		do{
 			pass = false;
 			name = input.nextLine();
@@ -381,6 +399,7 @@ public class Main {
 			System.out.println("This is an invalid name, please enter a valid name: ");			
 		}while(!pass);
 			
+>>>>>>> master
 		// Add the things to the other things.
 		Serialization.InstructorInfo.add(new InstructorInfo(name, instructorID));
 		System.out.println("Instructor added!");
@@ -403,11 +422,11 @@ public class Main {
 			days = "";
 			
 			switch (ClassInfo.get(i).semester) {
-			case 1: semester = "Spring";
+			case 1: semester = "SPRING";
 				break;
-			case 2: semester = "Summer";
+			case 2: semester = "SUMMER";
 				break;
-			default: semester = "Fall";
+			default: semester = "FALL";
 				break;
 			}
 			
@@ -464,7 +483,7 @@ public class Main {
 		
 		do {		
 			System.out.print("Enter a Course ID, Instructor ID or name, or Room Number to search, or enter \"n\" to exit: ");
-			search = input.nextLine();
+			search = input.nextLine().toUpperCase();
 			
 			if(search.equals("n") || search.equals("N")){
 				return;
@@ -538,11 +557,11 @@ public class Main {
 					days = "";
 					
 					switch (SearchResults.get(i).semester) {
-					case 1: semester = "Spring";
+					case 1: semester = "SPRING";
 						break;
-					case 2: semester = "Summer";
+					case 2: semester = "SUMMER";
 						break;
-					default: semester = "Fall";
+					default: semester = "FALL";
 						break;
 					}
 					
@@ -564,6 +583,18 @@ public class Main {
 						}
 					}
 					
+<<<<<<< HEAD
+					if(Serialization.ClassInfo.get(i).roomNumber != null){
+						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
+								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
+								+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
+						System.out.println(" ");
+					} else if(Serialization.ClassInfo.get(i).roomNumber == null){
+						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + "NOT ASSIGNED"  
+								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
+								+ " Semester: " + semester + " Classtime: " + "NOT ASSIGNED");
+						System.out.println(" ");
+=======
 					if (SearchResults.get(i).roomNumber != null){
 					System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
 							+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
@@ -572,6 +603,7 @@ public class Main {
 						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: Not Assigned"
 								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
 								+ " Semester: " + semester + " Classtime: Not Assigned");
+>>>>>>> master
 					}
 					System.out.println(" ");
 				}
