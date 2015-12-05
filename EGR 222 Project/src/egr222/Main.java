@@ -35,6 +35,7 @@ public class Main {
 	}
 	
 	static int Menu() {
+		System.out.println(" ");
 		System.out.println("Welcome to the California Baptist University catalog creator!");
 		System.out.println("What would you like to do today?");
 		System.out.println(" ");
@@ -43,6 +44,7 @@ public class Main {
 		System.out.println("3. Add a new Instructor");
 		System.out.println("4. Generate, view, and search the catalog");
 		System.out.println("5. Quit");
+		System.out.println("You may press e at any point in the program to return to the main menu.");
 		System.out.println(" ");
 		System.out.print("Please enter in the number associated with the desired task: ");
 		
@@ -61,12 +63,12 @@ public class Main {
 	static void AddCourse(ArrayList<RoomInfo> RoomInfo,	ArrayList<ClassInfo> ClassInfo,	ArrayList<InstructorInfo> InstructorInfo) {
 		String fullName = "LOL420";
 		String instructor = " ";
-		String instructorID;
-		int credits;
+		String instructorID= " ";		
+		int credits=0;
 		int schedulingType = 0;
 		int maxCapacity = 0;
-		int year;
-		int semester;
+		int year=0;
+		int semester=0;
 		Boolean pass = true;
 		
 		@SuppressWarnings("resource")
@@ -78,6 +80,11 @@ public class Main {
 		do {
 			pass = true;
 			fullName = input.nextLine();
+			if(fullName.substring(0).matches("e"))
+			{
+				System.out.println("Going back to the main menu.");
+				return;
+			}
 			if (fullName.length() != 6 || !fullName.substring(0,3).matches("[a-zA-Z]+") || !fullName.substring(3).matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering the Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.) again: ");
 				pass = false;
@@ -99,6 +106,16 @@ public class Main {
 		do {
 			pass = true;
 			instructorID = input.nextLine();
+			if(instructorID.substring(0).matches("e"))
+			{				
+				System.out.println("Going back to the main menu.");
+				return;
+			}
+			if (instructorID.matches("register"))
+			{
+				AddInstructor(Serialization.InstructorInfo);
+				return;
+			}
 			if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering in the instructors unique 6-digit ID again: ");
 				pass = false;
@@ -109,12 +126,28 @@ public class Main {
 						pass = true;
 				}
 				if (!pass)
-					System.out.print("Uh oh, this instructor is not registered! Try entering in a different instructors unique 6-digit ID: ");
+					System.out.print("Uh oh, this instructor is not registered! Try entering in a different instructors unique 6-digit ID or type in register: ");
 			}
 		} while (!pass);
-						
-		System.out.print("Awesome! Now enter in the number of credits for this course: ");
-		credits = input.nextInt();
+		String creditS;				
+		System.out.print("Awesome! Now enter in the number of credits for this course:");
+		//Validating amount of credits per course input
+		do{
+			pass=false;
+			creditS = input.nextLine();
+			if(creditS.matches("e"))
+			{
+				System.out.println("Going back to the main menu.");
+				return;
+			}
+			if(creditS.matches("1")||creditS.matches("2")||creditS.matches("3")||creditS.matches("4")||creditS.matches("5"))
+			{
+				credits = Integer.parseInt(creditS);
+				pass=true;
+			}else{
+				System.out.println("Invalid input. Please input an integer from 1-5:");
+			}
+		}while(!pass);
 		
 		System.out.println("What kind of scheduling would you prefer?");
 		System.out.println("");
@@ -124,11 +157,27 @@ public class Main {
 		System.out.println("4. Hybrid scheduling (Half of the hours in class, the other half online).");
 		System.out.println("");
 		System.out.print("Type in the number corresponding to your choice: ");
-		do {
-			schedulingType = input.nextInt();
-			if (schedulingType < 1 || schedulingType > 4)
-				System.out.print("Whoops, that entry is invalid! Try typing in the number corresponding to your choice again: ");
-		} while(schedulingType < 1 && schedulingType > 4);
+		String schedulingT;
+		do {				
+			pass = false;
+			schedulingT = input.nextLine();
+			if(schedulingT.substring(0).matches("e"))
+				{
+					System.out.println("Going back to the main menu.");
+					return;
+			}
+			if(schedulingT.matches("[-+]?\\d*\\.?\\d+"))
+			{ 
+				schedulingType = Integer.parseInt(schedulingT);
+				if (schedulingType < 1 || schedulingType > 4){
+					System.out.print("Whoops, that entry is invalid! Try typing in the number corresponding to your choice again: ");
+				}else{
+					pass = true;
+				}					
+			}else{
+				System.out.println("Invalid input. Please enter a valid input: ");
+			}			
+		} while(!pass);
 
 		
 		System.out.print("Fantastic, only a few more details! Enter in the maximum capacity of the class: ");
@@ -136,6 +185,11 @@ public class Main {
 		do {
 			pass = true;
 			stringToInt = input.nextLine();
+			if(stringToInt.substring(0).matches("e"))
+			{
+				System.out.println("Going back to the main menu.");
+				return;
+			}
 			if (stringToInt.length() > 0) {
 				if (!stringToInt.matches("[-+]?\\d*\\.?\\d+") || (Integer.parseInt(stringToInt) % 1 != 0)) {
 					System.out.print("Uh oh, Did you enter in an integer for the maximum capacity of the class? Try again: ");
@@ -147,7 +201,28 @@ public class Main {
 		} while(!pass);
 		
 		System.out.print("Good. Now enter in the year this class will start: ");
-		year = input.nextInt();
+		String yeaR;
+		do{
+			pass=false;
+			yeaR = input.nextLine();
+			if(yeaR.matches("e"))
+			{
+				System.out.println("Going back to the main menu.");
+				return;
+			}			
+			if(yeaR.matches("[a-zA-Z]+"))
+			{
+				System.out.println("Invalid input. Please input a valid year:");
+			}else{
+				year = Integer.parseInt(yeaR);
+				if(year<2015)
+				{
+					System.out.println("This is an invalid year, plese enter a valid year:");
+				}else{
+					pass=true;
+				}				
+			}
+		}while(!pass);	
 		
 		System.out.println("Finally, we'll select the semester of the course ");
 		System.out.println(" ");
@@ -156,15 +231,27 @@ public class Main {
 		System.out.println("3. Fall");
 		System.out.println(" ");
 		System.out.print("Select the number associated with the desired semester: ");
+		String semesteR;
 		do {
 			pass = true;
-			semester = input.nextInt();
-			
-			if (semester < 1 || semester > 3) {
+			semesteR = input.nextLine();			
+			if(semesteR.matches("e"))
+			{
+				System.out.println("Going back to the main menu.");
+				return;				
+			}
+			if(semesteR.matches("[a-zA-Z]+")||semesteR.matches("[-+]?\\d*\\.?\\d+"))
+			{
+				System.out.println("I am sorry but you have entered an invalid number. Please input a valid number:");
 				pass = false;
-				System.out.println(" ");
-				System.out.print("You entered an invalid number. Try selecting the number associated with the desired semester again: ");
-			}	
+			}else{
+				semester = Integer.parseInt(semesteR);
+				if (semester < 1 || semester > 3) {
+					pass = false;
+					System.out.println(" ");
+					System.out.print("You entered an invalid number. Try selecting the number associated with the desired semester again: ");
+				}
+			}				
 		} while(!pass);
 		
 		// Add the things to the other things.
@@ -194,6 +281,17 @@ public class Main {
 		do {
 			pass = true;
 			roomNumber = input.nextLine();
+			if(roomNumber.matches("e"))
+			{
+				System.out.println("Going back to the main menu.");
+				return;
+			
+			}
+			if(roomNumber.matches("[a-zA-Z]+")||!roomNumber.matches("[-+]?\\d*\\.?\\d+"))
+			{
+				System.out.println("Invalid room number. Please enter a valid one: ");
+				pass = false;
+			}
 			for (int i = 0; i < Serialization.RoomInfo.size(); i++) {
 				if(roomNumber.equals(RoomInfo.get(i).roomNumber)) {
 					System.out.print("Uh oh! This room already exists! Try entering in a unique room number: ");
@@ -210,11 +308,22 @@ public class Main {
 		do {
 			pass = true;
 			stringToInt = input.nextLine();
+			if(stringToInt.matches("e"))
+			{
+				System.out.println("Going back to the main menu.");
+				return;
+			}
 			if (!stringToInt.matches("[-+]?\\d*\\.?\\d+") || (Integer.parseInt(stringToInt) % 1 != 0)) {
-				System.out.print("Uh oh, Did you enter in an integer for the maximum capacity of the room? Try again: ");
+				System.out.print("Uh oh, Did you not enter in an integer for the maximum capacity of the room? Try again: ");
 				pass = false;
-			} else
+			} else{
 				maxCapacity = Integer.parseInt(stringToInt);
+				if(maxCapacity<1)
+				{
+					System.out.println("This is an invalid input. Please enter a valid capacity: ");
+					pass = false;
+				}
+			}				
 		} while(!pass);
 		
 		// Add the things to the other things.
@@ -238,6 +347,11 @@ public class Main {
 		do {
 			pass = true;
 			instructorID = input.nextLine();
+			if(instructorID.matches("e"))
+			{
+				System.out.println("Going back to the main menu.");
+				return;
+			}
 			if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering in the instructors unique 6-digit ID again: ");
 				pass = false;
@@ -253,8 +367,20 @@ public class Main {
 		} while (!pass);
 		
 		System.out.print("Now just enter in the instructor's name: ");
-		name = input.nextLine();
-		
+		do{
+			pass = false;
+			name = input.nextLine();
+			if(name.matches("e"))
+			{
+				return;
+			}
+			if(name.matches("[a-zA-Z]+"))
+			{
+				pass = true;
+			}
+			System.out.println("This is an invalid name, please enter a valid name: ");			
+		}while(!pass);
+			
 		// Add the things to the other things.
 		Serialization.InstructorInfo.add(new InstructorInfo(name, instructorID));
 		System.out.println("Instructor added!");
@@ -438,17 +564,16 @@ public class Main {
 						}
 					}
 					
-					if(Serialization.ClassInfo.get(i).roomNumber != null){
-						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
+					if (SearchResults.get(i).roomNumber != null){
+					System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
+							+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
+							+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
+					} else {
+						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: Not Assigned"
 								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
-								+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
-						System.out.println(" ");
-					} else if(Serialization.ClassInfo.get(i).roomNumber == null){
-						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + "Not Assigned"  
-								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
-								+ " Semester: " + semester + " Classtime: " + "Not Assigned");
-						System.out.println(" ");
+								+ " Semester: " + semester + " Classtime: Not Assigned");
 					}
+					System.out.println(" ");
 				}
 				
 			} else {
