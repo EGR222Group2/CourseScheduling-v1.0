@@ -34,12 +34,8 @@ public class Main {
 		System.exit(0);
 	}
 	
-<<<<<<< HEAD
 	static String Menu() {
-=======
-	static int Menu() {
 		System.out.println(" ");
->>>>>>> master
 		System.out.println("Welcome to the California Baptist University catalog creator!");
 		System.out.println("What would you like to do today?");
 		System.out.println(" ");
@@ -81,16 +77,13 @@ public class Main {
 		
 		do {
 			pass = true;
-<<<<<<< HEAD
+			
 			fullName = input.nextLine().toUpperCase();
-=======
-			fullName = input.nextLine();
-			if(fullName.substring(0).matches("e"))
+			if(fullName.substring(0).matches("E"))
 			{
 				System.out.println("Going back to the main menu.");
 				return;
 			}
->>>>>>> master
 			if (fullName.length() != 6 || !fullName.substring(0,3).matches("[a-zA-Z]+") || !fullName.substring(3).matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering the Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.) again: ");
 				pass = false;
@@ -111,11 +104,8 @@ public class Main {
 		
 		do {
 			pass = true;
-<<<<<<< HEAD
 			instructorID = input.nextLine().toUpperCase();
-=======
-			instructorID = input.nextLine();
-			if(instructorID.substring(0).matches("e"))
+			if(instructorID.substring(0).matches("E"))
 			{				
 				System.out.println("Going back to the main menu.");
 				return;
@@ -125,7 +115,6 @@ public class Main {
 				AddInstructor(Serialization.InstructorInfo);
 				return;
 			}
->>>>>>> master
 			if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering in the instructors unique 6-digit ID again: ");
 				pass = false;
@@ -356,16 +345,12 @@ public class Main {
 		
 		do {
 			pass = true;
-<<<<<<< HEAD
 			instructorID = input.nextLine().toUpperCase();
-=======
-			instructorID = input.nextLine();
-			if(instructorID.matches("e"))
+			if(instructorID.matches("E"))
 			{
 				System.out.println("Going back to the main menu.");
 				return;
 			}
->>>>>>> master
 			if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering in the instructors unique 6-digit ID again: ");
 				pass = false;
@@ -381,14 +366,13 @@ public class Main {
 		} while (!pass);
 		
 		System.out.print("Now just enter in the instructor's name: ");
-<<<<<<< HEAD
+
 		name = input.nextLine().toUpperCase();
 		
-=======
 		do{
 			pass = false;
 			name = input.nextLine();
-			if(name.matches("e"))
+			if(name.matches("E"))
 			{
 				return;
 			}
@@ -399,7 +383,6 @@ public class Main {
 			System.out.println("This is an invalid name, please enter a valid name: ");			
 		}while(!pass);
 			
->>>>>>> master
 		// Add the things to the other things.
 		Serialization.InstructorInfo.add(new InstructorInfo(name, instructorID));
 		System.out.println("Instructor added!");
@@ -583,27 +566,14 @@ public class Main {
 						}
 					}
 					
-<<<<<<< HEAD
 					if(Serialization.ClassInfo.get(i).roomNumber != null){
 						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
 								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
 								+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
-						System.out.println(" ");
 					} else if(Serialization.ClassInfo.get(i).roomNumber == null){
 						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + "NOT ASSIGNED"  
 								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
 								+ " Semester: " + semester + " Classtime: " + "NOT ASSIGNED");
-						System.out.println(" ");
-=======
-					if (SearchResults.get(i).roomNumber != null){
-					System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
-							+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
-							+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
-					} else {
-						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: Not Assigned"
-								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
-								+ " Semester: " + semester + " Classtime: Not Assigned");
->>>>>>> master
 					}
 					System.out.println(" ");
 				}
