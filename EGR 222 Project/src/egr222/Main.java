@@ -100,7 +100,7 @@ public class Main {
 			}
 		} while (!pass);
 		
-		System.out.print("Great! Now let's add the course's instructor. Enter in the instructors unique 6-digit ID or type in \"R\" to register a new instructor: ");
+		System.out.print("Great! Now let's add the course's instructor. \nEnter in the instructors unique 6-digit ID, name, or type in \"R\" to register a new instructor: ");
 		
 		do {
 			pass = true;
@@ -112,19 +112,18 @@ public class Main {
 			} else if (instructorID.matches("R")) {
 				AddInstructor(Serialization.InstructorInfo);
 				pass = false; 
-				System.out.print("Great! Now let's add the course's instructor. Enter in the instructors unique 6-digit ID or type in \"R\" to register a new instructor: ");
-			} else if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
-				System.out.print("Oh no, this is an invalid entry! Try entering in the instructors unique 6-digit ID again: ");
-				pass = false;
+				System.out.print("Great! Now let's add the course's instructor. \nEnter in the instructors unique 6-digit ID, name, or type in \"R\" to register a new instructor: ");
 			} else {
 				pass = false;
 				for (int i = 0; i < Serialization.InstructorInfo.size(); i++) {
 					if(instructorID.matches(Serialization.InstructorInfo.get(i).instructorID.toString())){
 						pass = true;
+					} else if (instructorID.matches(Serialization.InstructorInfo.get(i).name)){
+						pass = true;
 					}
 				}
 				if (!pass)
-					System.out.print("Uh oh, this instructor is not registered! Try entering in a different instructors unique 6-digit ID or type in \"R\" to register a new instructor: ");
+					System.out.print("Uh oh, this instructor is not registered! \nTry entering in a different instructors unique 6-digit ID, name, or type in \"R\" to register a new instructor: ");
 			}
 		} while (!pass);
 		String creditS;				
