@@ -1,5 +1,6 @@
 package egr222;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,7 +10,7 @@ public class Main {
 		Boolean quit = false;
 		String task = "0";
 		
-		do {			
+		do {
 			task = Menu();
 			Serialization.ReadObjects();
 			
@@ -100,7 +101,7 @@ public class Main {
 			}
 		} while (!pass);
 		
-		System.out.print("Great! Now let's add the course's instructor. Enter in the instructors unique 6-digit ID: ");
+		System.out.print("Great! Now let's add the course's instructor. Enter in the instructors unique 6-digit ID or type in \"R\" to register a new instructor: ");
 		
 		do {
 			pass = true;
@@ -109,27 +110,26 @@ public class Main {
 			{				
 				System.out.println("Going back to the main menu.");
 				return;
-			}
-			if (instructorID.matches("register"))
-			{
+			} else if (instructorID.matches("R")) {
 				AddInstructor(Serialization.InstructorInfo);
-				return;
-			}
-			if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
+				pass = false; 
+				System.out.print("Great! Now let's add the course's instructor. Enter in the instructors unique 6-digit ID or type in \"R\" to register a new instructor: ");
+			} else if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! Try entering in the instructors unique 6-digit ID again: ");
 				pass = false;
 			} else {
 				pass = false;
 				for (int i = 0; i < Serialization.InstructorInfo.size(); i++) {
-					if(instructorID.equals(InstructorInfo.get(i).instructorID));
+					if(instructorID.matches(Serialization.InstructorInfo.get(i).instructorID.toString())){
 						pass = true;
+					}
 				}
 				if (!pass)
-					System.out.print("Uh oh, this instructor is not registered! Try entering in a different instructors unique 6-digit ID or type in register: ");
+					System.out.print("Uh oh, this instructor is not registered! Try entering in a different instructors unique 6-digit ID or type in \"R\" to register a new instructor: ");
 			}
 		} while (!pass);
 		String creditS;				
-		System.out.print("Awesome! Now enter in the number of credits for this course:");
+		System.out.print("Awesome! Now enter in the number of credits for this course: ");
 		//Validating amount of credits per course input
 		do{
 			pass=false;
@@ -139,12 +139,13 @@ public class Main {
 				System.out.println("Going back to the main menu.");
 				return;
 			}
-			if(creditS.matches("1")||creditS.matches("2")||creditS.matches("3")||creditS.matches("4")||creditS.matches("5"))
+			credits = Integer.parseInt(creditS);
+			if(credits >= 1 && credits <= 15)
 			{
-				credits = Integer.parseInt(creditS);
 				pass=true;
 			}else{
-				System.out.println("Invalid input. Please input an integer from 1-5:");
+				System.out.println("Invalid input. Please input an integer from 1-15: ");
+				pass = false;
 			}
 		}while(!pass);
 		
@@ -239,7 +240,7 @@ public class Main {
 				System.out.println("Going back to the main menu.");
 				return;				
 			}
-			if(semesteR.matches("[a-zA-Z]+")||semesteR.matches("[-+]?\\d*\\.?\\d+"))
+			if(semesteR.matches("[a-zA-Z]+")||!(semesteR.matches("[-+]?\\d*\\.?\\d+")))
 			{
 				System.out.println("I am sorry but you have entered an invalid number. Please input a valid number:");
 				pass = false;
@@ -313,7 +314,7 @@ public class Main {
 				return;
 			}
 			if (!stringToInt.matches("[-+]?\\d*\\.?\\d+") || (Integer.parseInt(stringToInt) % 1 != 0)) {
-				System.out.print("Uh oh, Did you not enter in an integer for the maximum capacity of the room? Try again: ");
+				System.out.print("Uh oh, did you not enter in an integer for the maximum capacity of the room? Try again: ");
 				pass = false;
 			} else{
 				maxCapacity = Integer.parseInt(stringToInt);
@@ -366,22 +367,11 @@ public class Main {
 		} while (!pass);
 		
 		System.out.print("Now just enter in the instructor's name: ");
-
 		name = input.nextLine().toUpperCase();
-		
-		do{
-			pass = false;
-			name = input.nextLine();
-			if(name.matches("E"))
-			{
-				return;
-			}
-			if(name.matches("[a-zA-Z]+"))
-			{
-				pass = true;
-			}
-			System.out.println("This is an invalid name, please enter a valid name: ");			
-		}while(!pass);
+		if(name.matches("E")){
+			System.out.println("Going back to the main menu.");
+			return;
+		}
 			
 		// Add the things to the other things.
 		Serialization.InstructorInfo.add(new InstructorInfo(name, instructorID));
