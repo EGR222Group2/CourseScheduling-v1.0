@@ -506,7 +506,7 @@ public class Main {
 							}
 						}
 						pass = true;
-						// This searches for an entire string, such as the entire class name or the entire instructor ID.
+						// This searches for an entire string, such as the entire class name or the entire instructor ID or room number.
 					} else if (search.equals(ClassInfo.get(i).fullName) || search.equals(ClassInfo.get(i).instructor) || search.equals(ClassInfo.get(i).instructorID) || search.equals(ClassInfo.get(i).roomNumber)){
 						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
 						for (int j = 0; j < SearchResults.size(); j++) {
@@ -520,6 +520,22 @@ public class Main {
 							}
 						}
 						pass = true;
+					} else if(ClassInfo.get(i).roomNumber != null && search.length() <= ClassInfo.get(i).roomNumber.length()) {
+						if (search.equals(ClassInfo.get(i).roomNumber.substring(0,search.length()))) {
+							SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
+							for (int j = 0; j < SearchResults.size(); j++) {
+								if (ClassInfo.get(i).fullName.equals(SearchResults.get(j).fullName)) {
+									SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
+									for (int k = 0; k < 5; k++){
+										for (int l = 0; l < 2; l++){
+											SearchResults.get(j).classtime[k][l] = ClassInfo.get(i).classtime[k][l];
+										}
+									}
+								}
+							}
+							pass = true;
+
+						}
 					}
 				} 
 			}
