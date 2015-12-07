@@ -1,6 +1,5 @@
 package egr222;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -487,7 +486,7 @@ public class Main {
 								SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
 								for (int k = 0; k < 5; k++){
 									for (int l = 0; l < 2; l++){
-										SearchResults.get(j).classtime[k][l] = ClassInfo.get(j).classtime[k][l];
+										SearchResults.get(j).classtime[k][l] = ClassInfo.get(i).classtime[k][l];
 									}
 								}
 							}
@@ -501,7 +500,7 @@ public class Main {
 								SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
 								for (int k = 0; k < 5; k++){
 									for (int l = 0; l < 2; l++){
-										SearchResults.get(j).classtime[k][l] = ClassInfo.get(j).classtime[k][l];
+										SearchResults.get(j).classtime[k][l] = ClassInfo.get(i).classtime[k][l];
 									}
 								}
 							}
@@ -515,7 +514,7 @@ public class Main {
 								SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
 								for (int k = 0; k < 5; k++){
 									for (int l = 0; l < 2; l++){
-										SearchResults.get(j).classtime[k][l] = ClassInfo.get(j).classtime[k][l];
+										SearchResults.get(j).classtime[k][l] = ClassInfo.get(i).classtime[k][l];
 									}
 								}
 							}
@@ -537,7 +536,7 @@ public class Main {
 					default: semester = "FALL";
 						break;
 					}
-					
+									
 					for (int j = 0; j < 5; j++){
 						for (int k = 0; k < 2; k++){
 							if (k == 0 && SearchResults.get(i).classtime[j][k] != null) {
@@ -556,15 +555,16 @@ public class Main {
 						}
 					}
 					
-					if(Serialization.ClassInfo.get(i).roomNumber != null){
-						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
-								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
+					if(SearchResults.get(i).roomNumber != null){
+						System.out.println("Name: " + SearchResults.get(i).fullName + " Instructor: " + SearchResults.get(i).instructor + " Room Number: " + SearchResults.get(i).roomNumber 
+								+ " Credits: " + SearchResults.get(i).credits + " Max Capacity: " + SearchResults.get(i).maxCapacity + " Year: " + SearchResults.get(i).year 
 								+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
-					} else if(Serialization.ClassInfo.get(i).roomNumber == null){
-						System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + "NOT ASSIGNED"  
-								+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
+					} else if(SearchResults.get(i).roomNumber == null){
+						System.out.println("Name: " + SearchResults.get(i).fullName + " Instructor: " + SearchResults.get(i).instructor + " Room Number: " + "NOT ASSIGNED"  
+								+ " Credits: " + SearchResults.get(i).credits + " Max Capacity: " + SearchResults.get(i).maxCapacity + " Year: " + SearchResults.get(i).year 
 								+ " Semester: " + semester + " Classtime: " + "NOT ASSIGNED");
 					}
+
 					System.out.println(" ");
 				}
 				
