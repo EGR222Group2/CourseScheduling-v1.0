@@ -68,6 +68,8 @@ public class Main {
 		int maxCapacity = 0;
 		int year=0;
 		int semester=0;
+		String prereqs = " ";
+		String description = " ";
 		Boolean pass = true;
 		
 		@SuppressWarnings("resource")
@@ -242,7 +244,7 @@ public class Main {
 			}
 		}while(!pass);	
 		
-		System.out.println("Finally, we'll select the semester of the course ");
+		System.out.println("What semester will the course take place?");
 		System.out.println(" ");
 		System.out.println("1. Spring");
 		System.out.println("2. Summer");
@@ -272,13 +274,23 @@ public class Main {
 			}				
 		} while(!pass);
 		
+		System.out.print("So close! Enter in any prerequisites to this course, seperated by a space, or type in 'NONE': ");
+		prereqs = input.next();
+		if (prereqs == null || prereqs.length() < 6)
+			prereqs = "NONE";
+		
+		System.out.print("\nFinally, why don't you add a description for this course or type 'NONE': ");
+		description = input.next();
+		if (description == null || description.length() <= 4)
+			description = "NONE";
+		
 		// Add the things to the other things.
 		for (int i = 0; i < InstructorInfo.size(); i++) {
 			if (instructorID.equals(InstructorInfo.get(i).instructorID));
 				InstructorInfo.get(i).classes.add(fullName);
 				instructor = InstructorInfo.get(i).name;
 		}
-		Serialization.ClassInfo.add(new ClassInfo(fullName, instructor, instructorID, sect, credits, schedulingType, maxCapacity, year, semester));
+		Serialization.ClassInfo.add(new ClassInfo(fullName, instructor, instructorID, sect, credits, schedulingType, maxCapacity, year, semester, prereqs, description));
 		System.out.println(fullName + sect + " added!");
 		System.out.println(" ");
 
@@ -441,7 +453,7 @@ public class Main {
 			if(Serialization.ClassInfo.get(i).roomNumber != null){
 				System.out.println("Name: " + Serialization.ClassInfo.get(i).fullName + Serialization.ClassInfo.get(i).sect + " Instructor: " + Serialization.ClassInfo.get(i).instructor + " Room Number: " + Serialization.ClassInfo.get(i).roomNumber 
 						+ " Credits: " + Serialization.ClassInfo.get(i).credits + " Max Capacity: " + Serialization.ClassInfo.get(i).maxCapacity + " Year: " + Serialization.ClassInfo.get(i).year 
-						+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
+						+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime + "\nPrerequisites: " + ClassInfo.get(i).prereqs + "\nDescription: " + ClassInfo.get(i).description);
 				System.out.println(" ");
 			}
 		}
@@ -458,7 +470,7 @@ public class Main {
 		Search(RoomInfo, ClassInfo, InstructorInfo);
 		
 	}
-	
+
 	static void Search(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo,	ArrayList<InstructorInfo> InstructorInfo) { 
 		String days = "";
 		String semester = null;
@@ -489,19 +501,14 @@ public class Main {
 			pass = false;
 			days = "";
 			
-			/* There are 5 possible ways to match a the user search with a course:
-				1. If the entry is only the course number (e.g. 222, 201, 255).
-				2. If the entry is only the 3 letters before the course number (e.g. 'EGR', 'PHY', 'MAT').
-				3. If the entry contains both the 3 letters and the course number (e.g. 'EGR222', 'PHY 201', 'MAT245'). 
-				4. If the entry contains the instructor's name or the instructor's ID.
-				5. If the entry contains the room number of the class. */
+			// Users are able to search by course name, course number, room number, instructor, year, or semester.
 			for (int i = 0; i < ClassInfo.size(); i ++) {
 				if(search.length() >= 3) {
 					// This narrows searches to the number part.
 					if (search.matches("[-+]?\\d*\\.?\\d+") && search.equals(ClassInfo.get(i).fullName.substring(3,6))) {
-						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).sect, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
+						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).sect, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester, ClassInfo.get(i).prereqs, ClassInfo.get(i).description));
 						for (int j = 0; j < SearchResults.size(); j++) {
-							if (ClassInfo.get(i).fullName.equals(SearchResults.get(j).fullName)) {
+							if ((ClassInfo.get(i).fullName + ClassInfo.get(i).sect).equals(SearchResults.get(j).fullName + SearchResults.get(j).sect)) {
 								SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
 								for (int k = 0; k < 5; k++){
 									for (int l = 0; l < 2; l++){
@@ -511,11 +518,11 @@ public class Main {
 							}
 						}
 						pass = true;
-						// This narrows searches to the first 3 letters.
-					} else if (search.length() == 3 && search.equals(ClassInfo.get(i).fullName.substring(0,3))) { 						
-						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).sect, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
+						// This searches for string matches, such as the class name or the entire instructor ID or room number.
+					} else if (search.equals(ClassInfo.get(i).fullName) || search.equals(ClassInfo.get(i).fullName + ClassInfo.get(i).sect) || (search.length() <= (ClassInfo.get(i).fullName + ClassInfo.get(i).sect).length() && search.equals((ClassInfo.get(i).fullName + ClassInfo.get(i).sect).substring(0,search.length()))) || search.equals(ClassInfo.get(i).instructor) || search.equals(ClassInfo.get(i).instructorID) || search.equals(ClassInfo.get(i).roomNumber) || search.equals(Integer.toString(ClassInfo.get(i).year))){
+						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).sect, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester, ClassInfo.get(i).prereqs, ClassInfo.get(i).description));
 						for (int j = 0; j < SearchResults.size(); j++) {
-							if (ClassInfo.get(i).fullName.equals(SearchResults.get(j).fullName)) {
+							if ((ClassInfo.get(i).fullName + ClassInfo.get(i).sect).equals(SearchResults.get(j).fullName + SearchResults.get(j).sect)) {
 								SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
 								for (int k = 0; k < 5; k++){
 									for (int l = 0; l < 2; l++){
@@ -525,25 +532,12 @@ public class Main {
 							}
 						}
 						pass = true;
-						// This searches for an entire string, such as the entire class name or the entire instructor ID or room number.
-					} else if (search.equals(ClassInfo.get(i).fullName) || search.equals(ClassInfo.get(i).instructor) || search.equals(ClassInfo.get(i).instructorID) || search.equals(ClassInfo.get(i).roomNumber)){
-						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).sect, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
-						for (int j = 0; j < SearchResults.size(); j++) {
-							if (ClassInfo.get(i).fullName.equals(SearchResults.get(j).fullName)) {
-								SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
-								for (int k = 0; k < 5; k++){
-									for (int l = 0; l < 2; l++){
-										SearchResults.get(j).classtime[k][l] = ClassInfo.get(i).classtime[k][l];
-									}
-								}
-							}
-						}
-						pass = true;
+						// Checks to see if a room was assigned before checking for a room number match.
 					} else if(ClassInfo.get(i).roomNumber != null && search.length() <= ClassInfo.get(i).roomNumber.length()) {
 						if (search.equals(ClassInfo.get(i).roomNumber.substring(0,search.length()))) {
-							SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).sect, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester));
+							SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).sect, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester, ClassInfo.get(i).prereqs, ClassInfo.get(i).description));
 							for (int j = 0; j < SearchResults.size(); j++) {
-								if (ClassInfo.get(i).fullName.equals(SearchResults.get(j).fullName)) {
+								if ((ClassInfo.get(i).fullName + ClassInfo.get(i).sect).equals(SearchResults.get(j).fullName + SearchResults.get(j).sect)) {
 									SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
 									for (int k = 0; k < 5; k++){
 										for (int l = 0; l < 2; l++){
@@ -553,7 +547,31 @@ public class Main {
 								}
 							}
 							pass = true;
-
+						}
+						// The last resort is to check by semester.
+					} else {
+						switch (ClassInfo.get(i).semester) {
+						case 1: semester = "SPRING";
+							break;
+						case 2: semester = "SUMMER";
+							break;
+						default: semester = "FALL";
+							break;
+						}
+						
+						if(search.equals(semester)) {
+							SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).sect, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester, ClassInfo.get(i).prereqs, ClassInfo.get(i).description));
+							for (int j = 0; j < SearchResults.size(); j++) {
+								if ((ClassInfo.get(i).fullName + ClassInfo.get(i).sect).equals(SearchResults.get(j).fullName + SearchResults.get(j).sect)) {
+									SearchResults.get(j).roomNumber = ClassInfo.get(i).roomNumber;
+									for (int k = 0; k < 5; k++){
+										for (int l = 0; l < 2; l++){
+											SearchResults.get(j).classtime[k][l] = ClassInfo.get(i).classtime[k][l];
+										}
+									}
+								}
+							}
+							pass = true;
 						}
 					}
 				} 
@@ -593,11 +611,11 @@ public class Main {
 					if(SearchResults.get(i).roomNumber != null){
 						System.out.println("Name: " + SearchResults.get(i).fullName + SearchResults.get(i).sect + " Instructor: " + SearchResults.get(i).instructor + " Room Number: " + SearchResults.get(i).roomNumber 
 								+ " Credits: " + SearchResults.get(i).credits + " Max Capacity: " + SearchResults.get(i).maxCapacity + " Year: " + SearchResults.get(i).year 
-								+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime);
+								+ " Semester: " + semester + " Classtime: " + days + " " + startTime + "-" + endTime+ "\nPrerequisites: " + SearchResults.get(i).prereqs + "\nDescription: " + SearchResults.get(i).description);
 					} else if(SearchResults.get(i).roomNumber == null){
 						System.out.println("Name: " + SearchResults.get(i).fullName + SearchResults.get(i).sect + " Instructor: " + SearchResults.get(i).instructor + " Room Number: " + "NOT ASSIGNED"  
 								+ " Credits: " + SearchResults.get(i).credits + " Max Capacity: " + SearchResults.get(i).maxCapacity + " Year: " + SearchResults.get(i).year 
-								+ " Semester: " + semester + " Classtime: " + "NOT ASSIGNED");
+								+ " Semester: " + semester + " Classtime: " + "NOT ASSIGNED" + "\nPrerequisies: " + SearchResults.get(i).prereqs + "\nDescription: " + SearchResults.get(i).description);
 					}
 
 					System.out.println(" ");
