@@ -110,9 +110,9 @@ public class Serialization {
 		RoomInfo.add(new RoomInfo(number, capacity));
 	}
 	
-	public void NewClass(String fullName, String instructor, String instructorID, int credits, int schedulingType, int maxCapacity, int year, int semester, float[][] classtime) {
+	public void NewClass(String fullName, String instructor, String instructorID, String sect, int credits, int schedulingType, int maxCapacity, int year, int semester, float[][] classtime) {
 		System.out.println("new class2");
-		ClassInfo.add(new ClassInfo(fullName, instructor, instructorID, credits, schedulingType, maxCapacity, year, semester));
+		ClassInfo.add(new ClassInfo(fullName, instructor, instructorID, sect, credits, schedulingType, maxCapacity, year, semester));
 	}
 	
 	public void NewInstructor(String name, String instructorID) {
