@@ -183,7 +183,8 @@ public class ScheduleGenerator {
 		
 		for(int i = 0; i < ClassInfo.size(); i++){
 			if(ClassInfo.get(i).roomNumber == null){
-				NotScheduled.add(ClassInfo.get(i).fullName);
+				String nameOfClass = ClassInfo.get(i).fullName + ClassInfo.get(i).sect;
+				NotScheduled.add(nameOfClass);
 			}
 		}
 		
