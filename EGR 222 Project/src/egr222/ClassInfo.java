@@ -38,6 +38,8 @@ public class ClassInfo implements Serializable {
 		this.maxCapacity = maxCapacity;
 		this.year = year;
 		this.semester = semester;
+		this.prereqs = prereqs;
+		this.description = description;
 		for (int i = 0; i < 5; i++){
 			for (int j = 0; j < 2; j++){
 				this.classtime[i][j] = " ";

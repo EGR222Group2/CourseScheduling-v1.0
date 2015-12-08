@@ -44,7 +44,6 @@ public class Main {
 		System.out.println("3. Add a new Instructor");
 		System.out.println("4. Generate, view, and search the catalog");
 		System.out.println("5. Quit");
-		System.out.println("You may press e at any point in the program to return to the main menu.");
 		System.out.println(" ");
 		System.out.print("Please enter in the number associated with the desired task: ");
 		
@@ -76,7 +75,7 @@ public class Main {
 		Scanner input = new Scanner( System.in );
 		
 		System.out.println("ADD COURSE");
-		System.out.print("Let's start off by entering the 6 letter/number Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.): ");
+		System.out.print("Let's start off by entering the 6 letter/number Course ID (e.g. 'EGR101', 'MAT245', 'ENG123', etc.) or enter 'e' at any time to return to the main menu: ");
 		
 		do {
 			pass = true;
@@ -275,13 +274,15 @@ public class Main {
 		} while(!pass);
 		
 		System.out.print("So close! Enter in any prerequisites to this course, seperated by a space, or type in 'NONE': ");
-		prereqs = input.next();
-		if (prereqs == null || prereqs.length() < 6)
+		prereqs = input.nextLine();
+		System.out.println(prereqs + " " + prereqs.length());
+		if (prereqs.length() < 6)
 			prereqs = "NONE";
 		
 		System.out.print("\nFinally, why don't you add a description for this course or type 'NONE': ");
-		description = input.next();
-		if (description == null || description.length() <= 4)
+		description = input.nextLine();
+		System.out.println(description + " " + description.length());
+		if (description.length() <= 4)
 			description = "NONE";
 		
 		// Add the things to the other things.
@@ -304,7 +305,7 @@ public class Main {
 		Scanner input = new Scanner( System.in );
 		
 		System.out.println("ADD CLASSROOM");
-		System.out.print("Let's start by entering in the room number: ");
+		System.out.print("Let's start by entering in the room number (You may also enter 'e' at any time to return to the main menu): ");
 		
 		Boolean pass = true;
 		
@@ -317,11 +318,7 @@ public class Main {
 				return;
 			
 			}
-			if(roomNumber.matches("[a-zA-Z]+")||!roomNumber.matches("[-+]?\\d*\\.?\\d+"))
-			{
-				System.out.println("Invalid room number. Please enter a valid one: ");
-				pass = false;
-			}
+			
 			for (int i = 0; i < Serialization.RoomInfo.size(); i++) {
 				if(roomNumber.equals(RoomInfo.get(i).roomNumber)) {
 					System.out.print("Uh oh! This room already exists! Try entering in a unique room number: ");
@@ -368,7 +365,7 @@ public class Main {
 		String instructorID;
 		
 		System.out.println("ADD INSTRUCTOR");
-		System.out.print("Let's start by entering in the unique 6-digit ID of the instructor: ");
+		System.out.print("Let's start by entering in the unique 6-digit ID of the instructor(You may also enter 'e' at any time to return to the main menu): ");
 		
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner( System.in );
@@ -485,10 +482,10 @@ public class Main {
 		Scanner input = new Scanner( System.in );
 		
 		do {		
-			System.out.print("Enter a Course ID, Instructor ID or name, or Room Number to search, or enter \"n\" to exit: ");
+			System.out.print("Enter a Course ID, Instructor ID or name, or Room Number to search, or enter 'e' to exit: ");
 			search = input.nextLine().toUpperCase();
 			
-			if(search.equals("n") || search.equals("N")){
+			if(search.equals("e") || search.equals("E")){
 				return;
 			}
 			
