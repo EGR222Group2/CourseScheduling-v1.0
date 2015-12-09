@@ -120,7 +120,7 @@ public class Main {
 			}
 		}while (!pass);
 		
-		System.out.print("Great! Now let's add the course's instructor. \nEnter in the instructors unique 6-digit ID or type in \"R\" to register a new instructor: ");
+		System.out.print("Great! Now let's add the course's instructor. \nEnter in the instructor's unique 6-digit ID or type in \"R\" to register a new instructor: ");
 		
 		do {
 			pass = true;
@@ -132,7 +132,7 @@ public class Main {
 			} else if (instructorID.matches("R")) {
 				AddInstructor(Serialization.InstructorInfo);
 				pass = false; 
-				System.out.print("Great! Now let's add the course's instructor. \nEnter in the instructors unique 6-digit ID or type in \"R\" to register a new instructor: ");
+				System.out.print("Welcome back to course registration! Let's try adding the course's instructor again. \nEnter in the instructor's unique 6-digit ID or type in \"R\" to register a new instructor: ");
 			} else if (instructorID.length() != 6 || !instructorID.matches("[-+]?\\d*\\.?\\d+")) {
 				System.out.print("Oh no, this is an invalid entry! \nTry entering in the instructors unique 6-digit ID again: ");
 				pass = false;
@@ -144,7 +144,7 @@ public class Main {
 					}
 				}
 				if (!pass)
-					System.out.print("Uh oh, this instructor is not registered! \nTry entering in a different instructors unique 6-digit ID or type in \"R\" to register a new instructor: ");
+					System.out.print("Uh oh, this instructor is not registered! \nTry entering in a different instructor's unique 6-digit ID or type in \"R\" to register a new instructor: ");
 			}
 		} while (!pass);
 		String creditS;				
@@ -515,7 +515,7 @@ public class Main {
 						}
 						pass = true;
 						// This searches for string matches, such as the class name or the entire instructor ID or room number.
-					} else if (search.equals(ClassInfo.get(i).fullName) || search.equals(ClassInfo.get(i).fullName + ClassInfo.get(i).sect) || (search.length() <= (ClassInfo.get(i).fullName + ClassInfo.get(i).sect).length() && search.equals((ClassInfo.get(i).fullName + ClassInfo.get(i).sect).substring(0,search.length()))) || search.equals(ClassInfo.get(i).instructor) || search.equals(ClassInfo.get(i).instructorID) || search.equals(ClassInfo.get(i).roomNumber) || search.equals(Integer.toString(ClassInfo.get(i).year))){
+					} else if (search.equals(ClassInfo.get(i).fullName) || search.equals(ClassInfo.get(i).fullName + ClassInfo.get(i).sect) || (search.length() <= (ClassInfo.get(i).fullName + ClassInfo.get(i).sect).length() && search.equals((ClassInfo.get(i).fullName + ClassInfo.get(i).sect).substring(0,search.length()))) || search.equals(ClassInfo.get(i).instructor) || (search.length() <= ClassInfo.get(i).instructor.length() && search.equals(ClassInfo.get(i).instructor.substring(0,search.length()))) || search.equals(ClassInfo.get(i).instructorID) || search.equals(ClassInfo.get(i).roomNumber) || search.equals(Integer.toString(ClassInfo.get(i).year))){
 						SearchResults.add(new ClassInfo(ClassInfo.get(i).fullName, ClassInfo.get(i).instructor, ClassInfo.get(i).instructorID, ClassInfo.get(i).sect, ClassInfo.get(i).credits, ClassInfo.get(i).schedulingType, ClassInfo.get(i).maxCapacity, ClassInfo.get(i).year, ClassInfo.get(i).semester, ClassInfo.get(i).prereqs, ClassInfo.get(i).description));
 						for (int j = 0; j < SearchResults.size(); j++) {
 							if ((ClassInfo.get(i).fullName + ClassInfo.get(i).sect).equals(SearchResults.get(j).fullName + SearchResults.get(j).sect)) {

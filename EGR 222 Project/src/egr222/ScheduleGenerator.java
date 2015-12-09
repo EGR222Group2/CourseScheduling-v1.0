@@ -196,6 +196,11 @@ public class ScheduleGenerator {
 			if (RoomInfo.get(room).timesUsed[day][start + hour]) {
 				availible = false;
 			}
+			for(int instructors = 0; instructors < InstructorInfo.size(); instructors++) {
+				if ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID) && InstructorInfo.get(instructors).inClass[day][start + hour]) {
+					availible = false;
+				}
+			}
 		}
 		if (availible) {
 			String startTime = null;
@@ -252,6 +257,10 @@ public class ScheduleGenerator {
 			ClassInfo.get(course).classtime[day][1] = endTime;
 			for (int i = 0; i <= ClassInfo.get(course).credits * 4; i++) {
 				RoomInfo.get(room).timesUsed[day][start + i] = true;
+				for(int instructors = 0; instructors < InstructorInfo.size(); instructors++) {
+					if ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID))
+						InstructorInfo.get(instructors).inClass[day][start + i] = true;
+				}
 			}
 		}
 		return availible;
@@ -260,12 +269,16 @@ public class ScheduleGenerator {
 	static Boolean twoDayScheduling(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, int course, int room, int start) {
 		Boolean availible = true;
 		for (int hour = 0; hour < ClassInfo.get(course).credits * 2; hour++) {
-			if (RoomInfo.get(room).timesUsed[1][start + hour]) {
-				availible = false;
-			} else {
-				for (int day = 1; day < 5; day += 2) {
-					if (RoomInfo.get(room).timesUsed[day][start + hour])
-						availible = false;
+			for(int instructors = 0; instructors < InstructorInfo.size(); instructors++) {
+				if (RoomInfo.get(room).timesUsed[1][start + hour] || ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID) && InstructorInfo.get(instructors).inClass[1][start + hour])) {
+					availible = false;
+				} else {
+					for (int day = 1; day < 5; day += 2) {
+						if (RoomInfo.get(room).timesUsed[day][start + hour])
+							availible = false;
+						if ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID) && InstructorInfo.get(instructors).inClass[day][start + hour])
+							availible = false;
+					}
 				}
 			}
 		}
@@ -324,6 +337,10 @@ public class ScheduleGenerator {
 				ClassInfo.get(course).classtime[day][1] = endTime;
 				for (int i = 0; i <= (ClassInfo.get(course).credits * 2); i++) {
 					RoomInfo.get(room).timesUsed[day][start + i] = true;
+					for(int instructors = 0; instructors < InstructorInfo.size(); instructors++) {
+						if ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID))
+							InstructorInfo.get(instructors).inClass[day][start + i] = true;
+					}
 				}
 			}
 		}
@@ -333,12 +350,16 @@ public class ScheduleGenerator {
 	static Boolean threeDayScheduling(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, int course, int room, int start, int remainder) {
 		Boolean availible = true;
 		for (int hour = 0; hour < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); hour++) {
-			if (RoomInfo.get(room).timesUsed[0][start + hour]) {
-				availible = false;
-			} else {
-				for (int day = 0; day < 5; day += 2) {
-					if (RoomInfo.get(room).timesUsed[day][start + hour])
-						availible = false;
+			for(int instructors = 0; instructors < InstructorInfo.size(); instructors++) {
+				if (RoomInfo.get(room).timesUsed[0][start + hour] || ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID) && InstructorInfo.get(instructors).inClass[0][start + hour])) {
+					availible = false;
+				} else {
+					for (int day = 0; day < 5; day += 2) {
+						if (RoomInfo.get(room).timesUsed[day][start + hour])
+							availible = false;
+						if ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID) && InstructorInfo.get(instructors).inClass[day][start + hour])
+							availible = false;
+					}
 				}
 			}
 		}
@@ -430,13 +451,21 @@ public class ScheduleGenerator {
 					ClassInfo.get(course).classtime[day][1] = endTime;
 				}
 				if(remainder > 0) {
-					for (int i = 0; i < ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); i++) {
+					for (int i = 0; i <= ((Integer)(ClassInfo.get(course).credits * 4/3) + 4); i++) {
 						RoomInfo.get(room).timesUsed[day][start + i] = true;
+						for(int instructors = 0; instructors < InstructorInfo.size(); instructors++) {
+							if ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID))
+								InstructorInfo.get(instructors).inClass[day][start + i] = true;
+						}
 					}
 					remainder--;
 				} else {
-					for (int i = 0; i < (Integer)(ClassInfo.get(course).credits * 4/3); i++) {
+					for (int i = 0; i <= (Integer)(ClassInfo.get(course).credits * 4/3); i++) {
 						RoomInfo.get(room).timesUsed[day][start + i] = true;
+						for(int instructors = 0; instructors < InstructorInfo.size(); instructors++) {
+							if ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID))
+								InstructorInfo.get(instructors).inClass[day][start + i] = true;
+						}
 					}
 				}
 			}
@@ -447,8 +476,11 @@ public class ScheduleGenerator {
 	static Boolean HybridScheduling(ArrayList<RoomInfo> RoomInfo, ArrayList<ClassInfo> ClassInfo, ArrayList<InstructorInfo> InstructorInfo, int course, int room, int day, int start) {
 		Boolean availible = true;
 		for (int hour = 0; hour < ClassInfo.get(course).credits * 2; hour++) {
-			if (RoomInfo.get(room).timesUsed[day][start + hour]) {
+			if (RoomInfo.get(room).timesUsed[day][start + hour])
 				availible = false;
+			for(int instructors = 0; instructors < InstructorInfo.size(); instructors++) {
+				if ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID) && InstructorInfo.get(instructors).inClass[day][start + hour])
+					availible = false;
 			}
 		}
 		if (availible) {
@@ -494,6 +526,10 @@ public class ScheduleGenerator {
 			
 			for (int i = 0; i <= ClassInfo.get(course).credits * 2; i++) {
 				RoomInfo.get(room).timesUsed[day][start + i] = true;
+				for(int instructors = 0; instructors < InstructorInfo.size(); instructors++) {
+					if ((ClassInfo.get(course).instructorID).equals(InstructorInfo.get(instructors).instructorID))
+						InstructorInfo.get(instructors).inClass[day][start + i] = true;
+				}
 			}
 			ClassInfo.get(course).roomNumber += "/ONLINE";
 		}
