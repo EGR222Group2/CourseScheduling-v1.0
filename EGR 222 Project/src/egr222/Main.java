@@ -364,7 +364,7 @@ public class Main {
 		String instructorID;
 		
 		System.out.println("ADD INSTRUCTOR");
-		System.out.print("Let's start by entering in the unique 6-digit ID of the instructor(You may also enter 'e' at any time to return to the main menu): ");
+		System.out.print("Let's start by entering in the unique 6-digit ID of the instructor (you may also enter 'e' at any time to return to the main menu): ");
 		
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner( System.in );
