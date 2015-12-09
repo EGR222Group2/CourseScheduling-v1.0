@@ -275,21 +275,20 @@ public class Main {
 		
 		System.out.print("So close! Enter in any prerequisites to this course, seperated by a space, or type in 'NONE': ");
 		prereqs = input.nextLine();
-		System.out.println(prereqs + " " + prereqs.length());
 		if (prereqs.length() < 6)
 			prereqs = "NONE";
 		
 		System.out.print("\nFinally, why don't you add a description for this course or type 'NONE': ");
 		description = input.nextLine();
-		System.out.println(description + " " + description.length());
 		if (description.length() <= 4)
 			description = "NONE";
 		
 		// Add the things to the other things.
 		for (int i = 0; i < InstructorInfo.size(); i++) {
-			if (instructorID.equals(InstructorInfo.get(i).instructorID));
+			if (instructorID.equals(InstructorInfo.get(i).instructorID)){
 				InstructorInfo.get(i).classes.add(fullName);
 				instructor = InstructorInfo.get(i).name;
+			}
 		}
 		Serialization.ClassInfo.add(new ClassInfo(fullName, instructor, instructorID, sect, credits, schedulingType, maxCapacity, year, semester, prereqs, description));
 		System.out.println(fullName + sect + " added!");
