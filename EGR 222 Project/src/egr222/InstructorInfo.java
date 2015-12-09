@@ -25,19 +25,6 @@ public class InstructorInfo implements Serializable {
 			}
 		}
 	}
-	
-	// Maybe for use later?
-	public void removeClass(String name){
-		int index = -1;
-		
-		for (int i = 0; i < classes.size(); i++){
-			if (classes.get(i) == name)
-				index = i;
-		}
-		
-		if (index >= 0)
-			this.classes.remove(index);
-	}
 
 	@Override
 	public String toString() {
